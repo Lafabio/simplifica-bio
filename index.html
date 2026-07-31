@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simplifica BIO Online - Aulas Particulares de Biologia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --green-900: #0a3622;
+            --green-800: #14532d;
+            --green-700: #166534;
+            --green-600: #16a34a;
+            --green-500: #22c55e;
+            --green-100: #dcfce7;
+            --green-50: #f0fdf4;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--gray-800);
+            background: var(--white);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+        /* Header */
+        header {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 12px 0;
+        }
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--green-800);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo span { color: var(--green-600); }
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--green-600);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        nav a {
+            color: var(--gray-600);
+            text-decoration: none;
+            margin-left: 28px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: var(--green-600); }
+        .nav-cta {
+            background: var(--green-600);
+            color: var(--white) !important;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .nav-cta:hover { background: var(--green-700) !important; }
+
+        /* Hero */
+        .hero {
+            padding: 160px 0 100px;
+            background: linear-gradient(135deg, var(--green-50) 0%, var(--white) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--gray-900);
+            margin-bottom: 16px;
+        }
+        .hero h1 span { color: var(--green-600); }
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--gray-600);
+            margin-bottom: 32px;
+            max-width: 480px;
+        }
+        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: var(--green-600);
+            color: var(--white);
+        }
+        .btn-primary:hover { background: var(--green-700); transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+        .btn-outline {
+            background: transparent;
+            color: var(--green-700);
+            border: 2px solid var(--green-600);
+        }
+        .btn-outline:hover { background: var(--green-50); transform: translateY(-1px); }
+        .hero-image {
+            width: 100%;
+            border-radius: var(--radius);
+            background: var(--green-100);
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+        }
+
+        /* Sections */
+        section { padding: 90px 0; }
+        .section-label {
+            color: var(--green-600);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 16px;
+        }
+        .section-subtitle {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-bottom: 48px;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .service-card {
+            background: var(--white);
+            border: 1px solid var(--gray-100);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            transition: all 0.25s;
+        }
+        .service-card:hover {
+            border-color: var(--green-500);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+        .service-icon {
+            width: 52px;
+            height: 52px;
+            background: var(--green-100);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 18px;
+        }
+        .service-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--gray-900);
+        }
+        .service-card p {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+        }
+
+        /* How it works */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 32px;
+            counter-reset: step;
+        }
+        .step {
+            text-align: center;
+            padding: 32px 24px;
+        }
+        .step-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--green-600);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 auto 20px;
+        }
+        .step h3 { margin-bottom: 8px; color: var(--gray-900); }
+        .step p { color: var(--gray-600); font-size: 0.95rem; }
+
+        /* Differential */
+        .diffs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+        .diff-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            padding: 20px;
+            background: var(--green-50);
+            border-radius: var(--radius);
+        }
+        .diff-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .diff-item h4 { font-size: 1rem; margin-bottom: 4px; color: var(--gray-900); }
+        .diff-item p { color: var(--gray-600); font-size: 0.9rem; }
+
+        /* CTA */
+        .cta {
+            background: linear-gradient(135deg, var(--green-800), var(--green-700));
+            color: var(--white);
+            text-align: center;
+            padding: 80px 0;
+        }
+        .cta h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+        .cta p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 32px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cta .btn-primary {
+            background: var(--white);
+            color: var(--green-800);
+        }
+        .cta .btn-primary:hover { background: var(--green-50); }
+
+        /* Footer */
+        footer {
+            background: var(--gray-900);
+            color: rgba(255,255,255,0.7);
+            padding: 40px 0;
+            text-align: center;
+        }
+        footer .logo { justify-content: center; margin-bottom: 12px; }
+        footer p { font-size: 0.9rem; }
+
+        /* WhatsApp float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: #25D366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 16px rgba(37,211,102,0.4);
+            text-decoration: none;
+            z-index: 99;
+            transition: transform 0.2s;
+        }
+        .whatsapp-float:hover { transform: scale(1.1); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav a { margin-left: 16px; font-size: 0.85rem; }
+            nav a:not(.nav-cta) { display: none; }
+            .hero { padding: 130px 0 60px; }
+            .hero .container { grid-template-columns: 1fr; gap: 32px; }
+            .hero h1 { font-size: 2rem; }
+            .hero-image { aspect-ratio: 16/9; font-size: 3rem; }
+            .section-title { font-size: 1.7rem; }
+            .services-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <a href="#" class="logo">
+            <div class="logo-icon">SB</div>
+            Simplifica <span>BIO</span>
+        </a>
+        <nav>
+            <a href="#servicos">Serviços</a>
+            <a href="#como-funciona">Como funciona</a>
+            <a href="#diferenciais">Diferenciais</a>
+            <a href="#contato" class="nav-cta">Fale conosco</a>
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container">
+        <div>
+            <h1>Biologia descomplicada para o <span>ENEM</span> e além</h1>
+            <p>Aulas particulares online com material didático, simulados, lista de exercícios e correção inteligente por OCR. Tudo para você dominar a biologia.</p>
+            <div class="hero-buttons">
+                <a href="#contato" class="btn btn-primary">Agende uma aula grátis</a>
+                <a href="#servicos" class="btn btn-outline">Ver serviços</a>
+            </div>
+        </div>
+        <div class="hero-image">🧬</div>
+    </div>
+</section>
+
+<section id="servicos">
+    <div class="container">
+        <p class="section-label">Serviços</p>
+        <h2 class="section-title">Tudo que você precisa em um só lugar</h2>
+        <p class="section-subtitle">Do planejamento ao resultado — soluções completas para sua preparação em biologia.</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🎓</div>
+                <h3>Aulas Particulares ENEM</h3>
+                <p>Aulas online individuais ou em grupo, com foco total no ENEM e vestibulares. Conteúdo personalizado ao seu nível.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📘</div>
+                <h3>Material Didático & Listas</h3>
+                <p>Apostilas, resumos e listas de exercícios comentados organizados por tema e por nível de dificuldade.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📝</div>
+                <h3>Simulados Online</h3>
+                <p>Simulados com questões inéditas e de provas anteriores, cronometrados e com correção detalhada.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📅</div>
+                <h3>Plano de Estudo Dirigido</h3>
+                <p>Cronograma personalizado com metas diárias e semanais. Acompanhamento contínuo da sua evolução.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🌿</div>
+                <h3>Atualidades em Biologia</h3>
+                <p>Análise de descobertas científicas, avanços da biotecnologia e temas quentes que caem no ENEM.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📄</div>
+                <h3>Elaboração de Provas</h3>
+                <p>Para escolas, cursinhos e professores. Provas personalizadas com gabarito e análise de desempenho.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🤖</div>
+                <h3>Correção por OCR</h3>
+                <p>Tire foto do seu gabarito e receba a correção instantânea com relatório de acertos, erros e desempenho por tema.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="como-funciona" style="background: var(--gray-50);">
+    <div class="container">
+        <p class="section-label">Como funciona</p>
+        <h2 class="section-title">Comece em 3 passos</h2>
+        <p class="section-subtitle">Simples, rápido e do seu jeito.</p>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Agende uma conversa</h3>
+                <p>Fale comigo pelo WhatsApp para entender seus objetivos e nível atual.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Receba seu plano</h3>
+                <p>Montei um cronograma de estudos personalizado com os serviços ideais pra você.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Comece a evoluir</h3>
+                <p>Aulas, materiais, simulados e correções — tudo integrado pra acelerar seus resultados.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="diferenciais">
+    <div class="container">
+        <p class="section-label">Diferenciais</p>
+        <h2 class="section-title">Por que Simplifica BIO?</h2>
+        <p class="section-subtitle">Mais do que aulas, um ecossistema de aprendizado.</p>
+        <div class="diffs">
+            <div class="diff-item">
+                <div class="diff-icon">🎯</div>
+                <div>
+                    <h4>Ensino personalizado</h4>
+                    <p>Conteúdo adaptado ao seu nível, ritmo e objetivos específicos.</p>
+                </div>
+            </div>
+            <div class="diff-item">
+                <div class="diff-icon">📊</div>
+                <div>
+                    <h4>Métricas de desempenho</h4>
+                    <p>Acompanhe sua evolução com relatórios detalhados por tema.</p>
+                </div>
+            </div>
+            <div class="diff-item">
+                <div class="diff-icon">⚡</div>
+                <div>
+                    <h4>Correção instantânea</h4>
+                    <p>Gabarito com OCR: envie a foto e receba a correção na hora.</p>
+                </div>
+            </div>
+            <div class="diff-item">
+                <div class="diff-icon">📱</div>
+                <div>
+                    <h4>100% online</h4>
+                    <p>Estude de onde estiver, pelo computador ou celular, no seu horário.</p>
+                </div>
+            </div>
+            <div class="diff-item">
+                <div class="diff-icon">🧪</div>
+                <div>
+                    <h4>Atualidades científicas</h4>
+                    <p>Novidades da ciência aplicadas ao que realmente cai nas provas.</p>
+                </div>
+            </div>
+            <div class="diff-item">
+                <div class="diff-icon">💬</div>
+                <div>
+                    <h4>Acompanhamento contínuo</h4>
+                    <p>Tire dúvidas por WhatsApp fora do horário das aulas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta" id="contato">
+    <div class="container">
+        <h2>Vamos começar?</h2>
+        <p>Agende uma aula experimental gratuita e descubra como a biologia pode ser mais simples do que parece.</p>
+        <a href="https://wa.me/5548996681111" target="_blank" class="btn btn-primary">Fale no WhatsApp</a>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <a href="#" class="logo">
+            <div class="logo-icon">SB</div>
+            Simplifica <span>BIO</span>
+        </a>
+        <p>&copy; 2026 Simplifica BIO Online. Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+<a href="https://wa.me/5548996681111" target="_blank" class="whatsapp-float" title="Fale conosco no WhatsApp">💬</a>
+
+</body>
+</html>
