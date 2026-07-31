@@ -162,7 +162,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 16px;
+            padding: 10px 16px 10px 10px;
             border-radius: 8px;
             text-decoration: none;
             color: var(--gray-800);
@@ -171,9 +171,15 @@
             font-size: 0.92rem;
         }
         .arquivo-link:hover { border-color: var(--green-500); background: var(--green-50); }
-        .arquivo-link .f-icon { flex-shrink: 0; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-        .arquivo-link.slide .f-icon { background: var(--green-100); color: var(--green-700); }
-        .arquivo-link.lista .f-icon { background: #eef2ff; color: #4338ca; }
+        .arquivo-link .capa {
+            width: 64px;
+            height: 42px;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 1px solid var(--gray-100);
+            background: var(--gray-100);
+        }
         .arquivo-link .f-name { flex: 1; }
         .arquivo-link .f-ext {
             flex-shrink: 0;
@@ -184,7 +190,6 @@
             padding: 2px 8px;
             border-radius: 6px;
         }
-        .arquivo-link .dl { flex-shrink: 0; color: var(--green-600); }
 
         .empty {
             text-align: center;
@@ -270,13 +275,6 @@
     function norm(s) {
         return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
-    function iconHTML(tipo) {
-        return '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
-            + (tipo === 'slide'
-                ? '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'
-                : '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/>')
-            + '</svg>';
-    }
     const totalSlides = MATERIAIS.reduce((n, t) => n + t.arquivos.filter(a => a.tipo === 'slide').length, 0);
     const totalListas = MATERIAIS.reduce((n, t) => n + t.arquivos.filter(a => a.tipo === 'lista').length, 0);
     document.getElementById('stats').innerHTML =
@@ -293,10 +291,9 @@
         return '<div class="grupo"><div class="grupo-title">' + titulo + '</div><div class="grupo-list">'
             + arquivos.map(a =>
                 '<a class="arquivo-link ' + tipo + '" href="' + esc(a.url) + '" download title="Baixar ' + esc(a.nome) + '">'
-                + '<span class="f-icon">' + iconHTML(tipo) + '</span>'
+                + '<img class="capa" src="' + esc(a.capa) + '" alt="Capa de ' + esc(a.nome) + '" loading="lazy">'
                 + '<span class="f-name">' + esc(a.nome) + '</span>'
                 + '<span class="f-ext">' + (tipo === 'slide' ? 'PPTX' : 'DOCX') + '</span>'
-                + '<span class="dl">' + iconHTML('slide') + '</span>'
                 + '</a>').join('')
             + '</div></div>';
     }
