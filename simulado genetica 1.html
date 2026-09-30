@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulado Interativo de Genética - Prof. Lafa (@lafabio)</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 14mm 12mm 14mm 12mm;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+      font-size: 9.5pt;
+      line-height: 1.45;
+      color: #1e293b;
+      background: #f8fafc;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+
+    /* HEADER */
+    .header-card {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 55%, #0d9488 100%);
+      color: #ffffff;
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-card h1 {
+      margin: 0 0 4px 0;
+      font-size: 15pt;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .header-card p {
+      margin: 0;
+      font-size: 9pt;
+      color: #ccfbf1;
+      font-weight: 500;
+    }
+    .author-badge {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-align: right;
+    }
+    .author-badge .name {
+      font-size: 11pt;
+      font-weight: 700;
+      display: block;
+    }
+    .author-badge .social {
+      font-size: 8.5pt;
+      color: #fef08a;
+      font-weight: 600;
+    }
+
+    .meta-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .meta-chip {
+      background: #f1f5f9;
+      border-left: 3px solid #2563eb;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 8.5pt;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    /* QUESTÕES */
+    .question {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      transition: all 0.2s ease;
+    }
+    .question.correct-border {
+      border: 1.5px solid #10b981;
+      background: #f0fdf4;
+    }
+    .question.incorrect-border {
+      border: 1.5px solid #ef4444;
+      background: #fef2f2;
+    }
+    .q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .q-badge {
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-weight: 800;
+      font-size: 8.5pt;
+      padding: 3px 9px;
+      border-radius: 5px;
+      border: 1px solid #bfdbfe;
+    }
+    .q-tag {
+      background: #ecfdf5;
+      color: #047857;
+      font-size: 7.5pt;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .q-text {
+      color: #1f2937;
+      margin-bottom: 10px;
+      text-align: justify;
+    }
+
+    /* OPÇÕES INTERATIVAS */
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .opt-label {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      cursor: pointer;
+      font-size: 9pt;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .opt-label:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+    .opt-label input[type="radio"] {
+      margin-right: 10px;
+      accent-color: #2563eb;
+      transform: scale(1.15);
+      cursor: pointer;
+    }
+    .opt-label.user-selected {
+      border-color: #3b82f6;
+      background: #eff6ff;
+      font-weight: 600;
+    }
+    .opt-label.is-correct {
+      background: #dcfce7 !important;
+      border-color: #22c55e !important;
+      color: #14532d;
+      font-weight: 700;
+    }
+    .opt-label.is-wrong {
+      background: #fee2e2 !important;
+      border-color: #ef4444 !important;
+      color: #7f1d1d;
+      text-decoration: line-through;
+    }
+
+    /* FEEDBACK EXCLUSIVO PÓS-ENVIO */
+    .feedback-box {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 8.5pt;
+      line-height: 1.4;
+    }
+    .feedback-box.show {
+      display: block;
+    }
+    .feedback-box.correct {
+      background: #ecfdf5;
+      border-left: 4px solid #10b981;
+      color: #065f46;
+    }
+    .feedback-box.incorrect {
+      background: #fff1f2;
+      border-left: 4px solid #f43f5e;
+      color: #9f1239;
+    }
+
+    /* SVG */
+    .svg-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0;
+      background: #fafafa;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px dashed #cbd5e1;
+    }
+
+    /* CONTROLES FINAIS */
+    .actions-card {
+      background: #f8fafc;
+      border: 2px dashed #cbd5e1;
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 24px;
+    }
+    .btn-submit {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      border: none;
+      padding: 12px 28px;
+      font-size: 11pt;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .btn-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+    }
+    .btn-reset {
+      background: #64748b;
+      color: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      font-size: 9pt;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    /* DASHBOARD DE RESULTADO */
+    #score-board {
+      display: none;
+      background: #ffffff;
+      border: 2px solid #2563eb;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .score-total {
+      font-size: 26pt;
+      font-weight: 900;
+      color: #1e3a8a;
+      margin: 6px 0;
+    }
+    .score-detail {
+      font-size: 10.5pt;
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- CABEÇALHO COM AUTORIA -->
+  <div class="header-card">
+    <div class="title-group">
+      <h1>Genética ENEM • Simulado Interativo</h1>
+      <p>Bloco 01: 1ª Lei de Mendel, Variações Não-Mendelianas e Heredogramas</p>
+    </div>
+    <div class="author-badge">
+      <span class="name">Prof. Lafa</span>
+      <span class="social">@lafabio</span>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <div class="meta-chip">Total: 20 Questões Estilo ENEM</div>
+    <div class="meta-chip">Gabarito Blindado: Liberado apenas após submissão final</div>
+    <div class="meta-chip">Habilidades BNCC: EM13CNT201 / EM13CNT301</div>
+  </div>
+
+  <form id="simulado-form">
+
+    <!-- Q1 -->
+    <div class="question" id="q-block-1">
+      <div class="q-header">
+        <span class="q-badge">Questão 01</span>
+        <span class="q-tag">Dominância Incompleta</span>
+      </div>
+      <div class="q-text">
+        Em um experimento com flores boca-de-leão (<em>Antirrhinum majus</em>), o cruzamento entre plantas de pétalas vermelhas e brancas produz uma geração F1 com 100% de flores cor-de-rosa. O intercruzamento entre as plantas de F1 gerou 240 sementes férteis. Quantas dessas plantas em F2 manifestarão fenótipo idêntico ao de um dos parentais originais puros?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q1" value="A"> A) 60.</label>
+        <label class="opt-label"><input type="radio" name="q1" value="B"> B) 80.</label>
+        <label class="opt-label"><input type="radio" name="q1" value="C"> C) 120.</label>
+        <label class="opt-label"><input type="radio" name="q1" value="D"> D) 180.</label>
+        <label class="opt-label"><input type="radio" name="q1" value="E"> E) 240.</label>
+      </div>
+      <div class="feedback-box" id="feedback-1"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question" id="q-block-2">
+      <div class="q-header">
+        <span class="q-badge">Questão 02</span>
+        <span class="q-tag">Alelos Letais</span>
+      </div>
+      <div class="q-text">
+        A acondroplasia é uma displasia óssea autossômica dominante condicionada pelo gene <em>FGFR3</em>. Embriões homozigotos dominantes sofrem letalidade gestacional precoce. Um casal de indivíduos acondroplásicos planeja um segundo filho. Desconsiderando perdas fetais, qual a probabilidade de conceber uma criança do sexo masculino com estatura típica (não acondroplásica)?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q2" value="A"> A) 1/6.</label>
+        <label class="opt-label"><input type="radio" name="q2" value="B"> B) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q2" value="C"> C) 1/3.</label>
+        <label class="opt-label"><input type="radio" name="q2" value="D"> D) 2/3.</label>
+        <label class="opt-label"><input type="radio" name="q2" value="E"> E) 3/8.</label>
+      </div>
+      <div class="feedback-box" id="feedback-2"></div>
+    </div>
+
+    <!-- Q3 COM SVG -->
+    <div class="question" id="q-block-3">
+      <div class="q-header">
+        <span class="q-badge">Questão 03</span>
+        <span class="q-tag">Genealogia & Heredograma</span>
+      </div>
+      <div class="q-text">
+        O heredograma a seguir esquematiza a transmissão de uma doença metabólica rara em uma família humana ao longo de três gerações. Os indivíduos escurecidos manifestam a alteração patológica:
+      </div>
+
+      <div class="svg-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 310" width="460" height="209">
+          <style>
+            .line { stroke: #1e293b; stroke-width: 2.2; fill: none; }
+            .normal { fill: #ffffff; stroke: #1e293b; stroke-width: 2.2; }
+            .affected { fill: #0f172a; stroke: #0f172a; stroke-width: 2.2; }
+            .label-g { font-family: 'Segoe UI', Arial, sans-serif; font-size: 15px; font-weight: 800; fill: #2563eb; }
+            .label-n { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: 600; fill: #334155; text-anchor: middle; }
+          </style>
+          <text x="20" y="55" class="label-g">I</text>
+          <text x="20" y="155" class="label-g">II</text>
+          <text x="20" y="260" class="label-g">III</text>
+
+          <line x1="220" y1="50" x2="310" y2="50" class="line" />
+          <line x1="265" y1="50" x2="265" y2="95" class="line" />
+          <rect x="190" y="35" width="30" height="30" class="normal" />
+          <text x="205" y="80" class="label-n">1</text>
+          <circle cx="325" cy="50" r="15" class="normal" />
+          <text x="325" y="80" class="label-n">2</text>
+
+          <line x1="450" y1="50" x2="540" y2="50" class="line" />
+          <line x1="495" y1="50" x2="495" y2="95" class="line" />
+          <rect x="420" y="35" width="30" height="30" class="affected" />
+          <text x="435" y="80" class="label-n">3</text>
+          <circle cx="555" cy="50" r="15" class="normal" />
+          <text x="555" y="80" class="label-n">4</text>
+
+          <line x1="140" y1="95" x2="390" y2="95" class="line" />
+          <line x1="140" y1="95" x2="140" y2="135" class="line" />
+          <line x1="265" y1="95" x2="265" y2="135" class="line" />
+          <line x1="390" y1="95" x2="390" y2="135" class="line" />
+          <line x1="495" y1="95" x2="495" y2="135" class="line" />
+
+          <line x1="405" y1="150" x2="480" y2="150" class="line" />
+          <line x1="442" y1="150" x2="442" y2="200" class="line" />
+
+          <rect x="125" y="135" width="30" height="30" class="affected" />
+          <text x="140" y="180" class="label-n">1</text>
+          <circle cx="265" cy="150" r="15" class="normal" />
+          <text x="265" y="180" class="label-n">2</text>
+          <circle cx="390" cy="150" r="15" class="normal" />
+          <text x="390" y="180" class="label-n">3</text>
+          <rect x="427" y="135" width="30" height="30" class="normal" />
+          <text x="442" y="180" class="label-n">4</text>
+          <circle cx="495" cy="150" r="15" class="normal" />
+          <text x="495" y="180" class="label-n">5</text>
+
+          <line x1="365" y1="200" x2="520" y2="200" class="line" />
+          <line x1="365" y1="200" x2="365" y2="240" class="line" />
+          <line x1="442" y1="200" x2="442" y2="240" class="line" />
+          <line x1="520" y1="200" x2="520" y2="240" class="line" />
+
+          <circle cx="365" cy="255" r="15" class="normal" />
+          <text x="365" y="285" class="label-n">1</text>
+          <rect x="427" y="240" width="30" height="30" class="affected" />
+          <text x="442" y="285" class="label-n">2</text>
+          <rect x="505" y="240" width="30" height="30" class="normal" />
+          <text x="520" y="285" class="label-n">3</text>
+        </svg>
+      </div>
+
+      <div class="q-text">
+        Com base na análise genealógica, o padrão de herança dessa condição e os genótipos do casal I-1 e I-2 são, respectivamente:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q3" value="A"> A) Autossômico recessivo; heterozigotos (Aa) e (Aa).</label>
+        <label class="opt-label"><input type="radio" name="q3" value="B"> B) Autossômico dominante; homozigoto recessivo (aa) e heterozigoto (Aa).</label>
+        <label class="opt-label"><input type="radio" name="q3" value="C"> C) Recessivo ligado ao X; homem normal (X<sup>A</sup>Y) e mulher heterozigota (X<sup>A</sup>X<sup>a</sup>).</label>
+        <label class="opt-label"><input type="radio" name="q3" value="D"> D) Autossômico dominante; ambos homozigotos dominantes (AA).</label>
+        <label class="opt-label"><input type="radio" name="q3" value="E"> E) Holândrico; portador da mutação no cromossomo Y e mulher normal.</label>
+      </div>
+      <div class="feedback-box" id="feedback-3"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question" id="q-block-4">
+      <div class="q-header">
+        <span class="q-badge">Questão 04</span>
+        <span class="q-tag">Probabilidade Condicional</span>
+      </div>
+      <div class="q-text">
+        Ainda com relação ao heredograma da Questão 03, os cônjuges II-4 e II-5 tiveram o filho acometido III-2. Sabendo que o indivíduo III-3 é clinicamente sadio, qual a probabilidade exata de que seja portador heterozigoto do alelo causador da doença?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q4" value="A"> A) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q4" value="B"> B) 1/2.</label>
+        <label class="opt-label"><input type="radio" name="q4" value="C"> C) 2/3.</label>
+        <label class="opt-label"><input type="radio" name="q4" value="D"> D) 3/4.</label>
+        <label class="opt-label"><input type="radio" name="q4" value="E"> E) 1/3.</label>
+      </div>
+      <div class="feedback-box" id="feedback-4"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question" id="q-block-5">
+      <div class="q-header">
+        <span class="q-badge">Questão 05</span>
+        <span class="q-tag">Codominância</span>
+      </div>
+      <div class="q-text">
+        No sistema MN sanguíneo humano, os alelos <em>L<sup>M</sup></em> e <em>L<sup>N</sup></em> promovem a síntese simultânea das glicoproteínas de membrana M e N nos eritrócitos. Em uma maternidade, um casal em que ambos são do tipo MN gerou dois filhos. A probabilidade de ambos possuírem o mesmo fenótipo dos genitores é de:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q5" value="A"> A) 1/2.</label>
+        <label class="opt-label"><input type="radio" name="q5" value="B"> B) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q5" value="C"> C) 1/8.</label>
+        <label class="opt-label"><input type="radio" name="q5" value="D"> D) 1/16.</label>
+        <label class="opt-label"><input type="radio" name="q5" value="E"> E) 3/16.</label>
+      </div>
+      <div class="feedback-box" id="feedback-5"></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="question" id="q-block-6">
+      <div class="q-header">
+        <span class="q-badge">Questão 06</span>
+        <span class="q-tag">Cruzamento-Teste</span>
+      </div>
+      <div class="q-text">
+        Um pecuarista precisa comprovar se um touro reprodutor de pelagem preta (caráter dominante determinado pelo alelo <em>B</em>) é homozigoto ou heterozigoto. O procedimento clássico para diagnosticar o genótipo parental por meio de um único cruzamento-teste consiste em cruzar o touro com fêmeas:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q6" value="A"> A) Homozigotas dominantes pretas (BB).</label>
+        <label class="opt-label"><input type="radio" name="q6" value="B"> B) Heterozigotas pretas (Bb).</label>
+        <label class="opt-label"><input type="radio" name="q6" value="C"> C) Homozigotas recessivas vermelhas (bb).</label>
+        <label class="opt-label"><input type="radio" name="q6" value="D"> D) Malhadas de genótipo desconhecido.</label>
+        <label class="opt-label"><input type="radio" name="q6" value="E"> E) Irmãs homozigotas da linhagem materna.</label>
+      </div>
+      <div class="feedback-box" id="feedback-6"></div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="question" id="q-block-7">
+      <div class="q-header">
+        <span class="q-badge">Questão 07</span>
+        <span class="q-tag">Genética Humana</span>
+      </div>
+      <div class="q-text">
+        A fibrose cística é uma doença autossômica recessiva ligada ao gene <em>CFTR</em>. Um homem clinicamente são, cujos pais são sãos mas tiveram uma filha com a doença, casa-se com uma mulher sabidamente heterozigota. Qual a chance de o casal conceber uma primeira criança do sexo feminino acometida pela enfermidade?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q7" value="A"> A) 1/6.</label>
+        <label class="opt-label"><input type="radio" name="q7" value="B"> B) 1/8.</label>
+        <label class="opt-label"><input type="radio" name="q7" value="C"> C) 1/12.</label>
+        <label class="opt-label"><input type="radio" name="q7" value="D"> D) 1/16.</label>
+        <label class="opt-label"><input type="radio" name="q7" value="E"> E) 1/24.</label>
+      </div>
+      <div class="feedback-box" id="feedback-7"></div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="question" id="q-block-8">
+      <div class="q-header">
+        <span class="q-badge">Questão 08</span>
+        <span class="q-tag">Dominância Incompleta e Letalidade</span>
+      </div>
+      <div class="q-text">
+        Em uma raça canina, o alelo dominante <em>C<sup>L</sup></em> confere cauda longa e <em>C<sup>C</sup></em> encurta a cauda. O heterozigoto apresenta cauda curta intermediária, enquanto os embriões homozigotos <em>C<sup>C</sup>C<sup>C</sup></em> morrem na gestação. Ao cruzar animais de cauda curta entre si, a proporção fenotípica entre os filhotes nascidos vivos é:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q8" value="A"> A) 3 cauda curta : 1 cauda longa.</label>
+        <label class="opt-label"><input type="radio" name="q8" value="B"> B) 1 cauda longa : 2 cauda curta : 1 letal.</label>
+        <label class="opt-label"><input type="radio" name="q8" value="C"> C) 2 cauda curta : 1 cauda longa.</label>
+        <label class="opt-label"><input type="radio" name="q8" value="D"> D) 1 cauda curta : 1 cauda longa.</label>
+        <label class="opt-label"><input type="radio" name="q8" value="E"> E) 100% de cauda curta.</label>
+      </div>
+      <div class="feedback-box" id="feedback-8"></div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="question" id="q-block-9">
+      <div class="q-header">
+        <span class="q-badge">Questão 09</span>
+        <span class="q-tag">Distribuição Binomial</span>
+      </div>
+      <div class="q-text">
+        Um casal heterozigoto para o albinismo clássico (autossômico recessivo) planeja ter exatamente 4 filhos biológicos. A probabilidade matemática de que esse casal venha a ter exatamente 3 filhos sadios e 1 filho albino, independentemente da ordem cronológica dos nascimentos, é de:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q9" value="A"> A) 27/256.</label>
+        <label class="opt-label"><input type="radio" name="q9" value="B"> B) 81/256.</label>
+        <label class="opt-label"><input type="radio" name="q9" value="C"> C) 108/256.</label>
+        <label class="opt-label"><input type="radio" name="q9" value="D"> D) 1/64.</label>
+        <label class="opt-label"><input type="radio" name="q9" value="E"> E) 27/64.</label>
+      </div>
+      <div class="feedback-box" id="feedback-9"></div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="question" id="q-block-10">
+      <div class="q-header">
+        <span class="q-badge">Questão 10</span>
+        <span class="q-tag">Bases Citológicas</span>
+      </div>
+      <div class="q-text">
+        O postulado mendeliano de que "os fatores para um determinado caráter se segregam na formação dos gametas" tem respaldo direto na divisão meiótica. A separação física desses alelos homólogos ocorre especificamente durante a:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q10" value="A"> A) Sinapse dos homólogos no zigóteno.</label>
+        <label class="opt-label"><input type="radio" name="q10" value="B"> B) Troca de quiasmas no paquíteno.</label>
+        <label class="opt-label"><input type="radio" name="q10" value="C"> C) Orientação equatorial na metáfase II.</label>
+        <label class="opt-label"><input type="radio" name="q10" value="D"> D) Disjunção dos cromossomos homólogos na anáfase I.</label>
+        <label class="opt-label"><input type="radio" name="q10" value="E"> E) Divisão dos centrômeros na anáfase II.</label>
+      </div>
+      <div class="feedback-box" id="feedback-10"></div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="question" id="q-block-11">
+      <div class="q-header">
+        <span class="q-badge">Questão 11</span>
+        <span class="q-tag">Cruzamento Parental</span>
+      </div>
+      <div class="q-text">
+        Na raça de galinhas Andaluza, a plumagem exibe ausência de dominância: aves pretas homozigotas cruzadas com aves brancas homozigotas geram prole azulada (ardósia). Um avicultor dispõe de aves azuis em seu plantel. Para produzir uma linhagem com 100% de aves azuis, ele deve cruzar:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q11" value="A"> A) Aves azuis sucessivamente entre si.</label>
+        <label class="opt-label"><input type="radio" name="q11" value="B"> B) Aves azuis com aves pretas homozigotas.</label>
+        <label class="opt-label"><input type="radio" name="q11" value="C"> C) Aves pretas puras com aves brancas puras.</label>
+        <label class="opt-label"><input type="radio" name="q11" value="D"> D) Aves azuis com aves brancas puras.</label>
+        <label class="opt-label"><input type="radio" name="q11" value="E"> E) Fêmeas azuis com machos malhados.</label>
+      </div>
+      <div class="feedback-box" id="feedback-11"></div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="question" id="q-block-12">
+      <div class="q-header">
+        <span class="q-badge">Questão 12</span>
+        <span class="q-tag">Genótipo x Ambiente</span>
+      </div>
+      <div class="q-text">
+        A fenilcetonúria é causada pela deficiência enzimática de fenilalanina hidroxilase. Crianças diagnosticadas pelo Teste do Pezinho submetidas a uma dieta com ingestão restrita de fenilalanina não manifestam o comprometimento neurológico. Essa evidência confirma cientificamente que:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q12" value="A"> A) A dieta altera a sequência do DNA do gene mutado.</label>
+        <label class="opt-label"><input type="radio" name="q12" value="B"> B) O fenótipo expressado é fruto da interação entre genótipo e ambiente.</label>
+        <label class="opt-label"><input type="radio" name="q12" value="C"> C) O alelo mutado readquire dominância na infância.</label>
+        <label class="opt-label"><input type="radio" name="q12" value="D"> D) Nutrientes da dieta deletam os alelos alterados das células.</label>
+        <label class="opt-label"><input type="radio" name="q12" value="E"> E) A ausência de fenilalanina anula as divisões meióticas.</label>
+      </div>
+      <div class="feedback-box" id="feedback-12"></div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="question" id="q-block-13">
+      <div class="q-header">
+        <span class="q-badge">Questão 13</span>
+        <span class="q-tag">Expressividade Variável</span>
+      </div>
+      <div class="q-text">
+        A polidactilia é uma alteração autossômica dominante caracterizada por dedos extranumerários que apresenta expressividade variável. Em termos clínicos e genéticos, isso significa que indivíduos portadores do alelo dominante mutado:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q13" value="A"> A) Podem não expressar o fenótipo em nenhuma fase da vida.</label>
+        <label class="opt-label"><input type="radio" name="q13" value="B"> B) Podem manifestar diferentes graus anatômicos do traço, de apêndices simples a dedos funcionais.</label>
+        <label class="opt-label"><input type="radio" name="q13" value="C"> C) Só transmitem a condição para descendentes do sexo masculino.</label>
+        <label class="opt-label"><input type="radio" name="q13" value="D"> D) Modificam a dosagem de alelos em resposta à temperatura.</label>
+        <label class="opt-label"><input type="radio" name="q13" value="E"> E) Eliminam o cromossomo mutado durante a divisão somática.</label>
+      </div>
+      <div class="feedback-box" id="feedback-13"></div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="question" id="q-block-14">
+      <div class="q-header">
+        <span class="q-badge">Questão 14</span>
+        <span class="q-tag">Probabilidade Genética</span>
+      </div>
+      <div class="q-text">
+        Uma mulher com visão normal, cujo pai era míope (anomalia autossômica recessiva), casa-se com um homem com visão normal cuja mãe era míope. O casal planeja ter dois descendentes. Qual a probabilidade de o primeiro nascer míope e o segundo nascer com visão normal?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q14" value="A"> A) 1/16.</label>
+        <label class="opt-label"><input type="radio" name="q14" value="B"> B) 3/16.</label>
+        <label class="opt-label"><input type="radio" name="q14" value="C"> C) 9/16.</label>
+        <label class="opt-label"><input type="radio" name="q14" value="D"> D) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q14" value="E"> E) 3/4.</label>
+      </div>
+      <div class="feedback-box" id="feedback-14"></div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="question" id="q-block-15">
+      <div class="q-header">
+        <span class="q-badge">Questão 15</span>
+        <span class="q-tag">Proporções Modificadas</span>
+      </div>
+      <div class="q-text">
+        Em camundongos, o alelo dominante <em>A<sup>Y</sup></em> produz pelagem amarela e causa morte embrionária precoce em homozigose (<em>A<sup>Y</sup>A<sup>Y</sup></em>). O alelo recessivo <em>a</em> produz pelagem agouti (cinza). Do cruzamento entre camundongos amarelos, foram gerados 120 filhotes nascidos vivos. Os números esperados de indivíduos amarelos e agouti são, respectivamente:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q15" value="A"> A) 90 e 30.</label>
+        <label class="opt-label"><input type="radio" name="q15" value="B"> B) 80 e 40.</label>
+        <label class="opt-label"><input type="radio" name="q15" value="C"> C) 60 e 60.</label>
+        <label class="opt-label"><input type="radio" name="q15" value="D"> D) 100 e 20.</label>
+        <label class="opt-label"><input type="radio" name="q15" value="E"> E) 40 e 80.</label>
+      </div>
+      <div class="feedback-box" id="feedback-15"></div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="question" id="q-block-16">
+      <div class="q-header">
+        <span class="q-badge">Questão 16</span>
+        <span class="q-tag">Herança Monogênica</span>
+      </div>
+      <div class="q-text">
+        A presença de covinha no queixo decorre de herança autossômica dominante. Um homem com covinha no queixo (heterozigoto) casa-se com uma mulher de queixo liso (sem covinha). A probabilidade de esse casal ter três filhos, sendo os três portadores de covinha no queixo, é:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q16" value="A"> A) 1/2.</label>
+        <label class="opt-label"><input type="radio" name="q16" value="B"> B) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q16" value="C"> C) 1/8.</label>
+        <label class="opt-label"><input type="radio" name="q16" value="D"> D) 3/8.</label>
+        <label class="opt-label"><input type="radio" name="q16" value="E"> E) 1/16.</label>
+      </div>
+      <div class="feedback-box" id="feedback-16"></div>
+    </div>
+
+    <!-- Q17 -->
+    <div class="question" id="q-block-17">
+      <div class="q-header">
+        <span class="q-badge">Questão 17</span>
+        <span class="q-tag">Penetrância Incompleta</span>
+      </div>
+      <div class="q-text">
+        O alelo dominante <em>R</em> determina a formação de flores roxas em uma espécie vegetal com penetrância incompleta de 70%. O alelo recessivo <em>r</em> condiciona flores brancas. Ao cruzar duas plantas heterozigotas (<em>Rr</em>), qual a porcentagem real esperada de descendentes que expressarão flores roxas?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q17" value="A"> A) 75,0%.</label>
+        <label class="opt-label"><input type="radio" name="q17" value="B"> B) 70,0%.</label>
+        <label class="opt-label"><input type="radio" name="q17" value="C"> C) 52,5%.</label>
+        <label class="opt-label"><input type="radio" name="q17" value="D"> D) 35,0%.</label>
+        <label class="opt-label"><input type="radio" name="q17" value="E"> E) 22,5%.</label>
+      </div>
+      <div class="feedback-box" id="feedback-17"></div>
+    </div>
+
+    <!-- Q18 -->
+    <div class="question" id="q-block-18">
+      <div class="q-header">
+        <span class="q-badge">Questão 18</span>
+        <span class="q-tag">Convenções de Heredograma</span>
+      </div>
+      <div class="q-text">
+        Em heredogramas biomédicos, o casamento entre parentes consanguíneos e o falecimento de um indivíduo são representados graficamente, respectivamente, por:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q18" value="A"> A) Linha horizontal dupla entre os parceiros e traço diagonal sobreposto ao símbolo.</label>
+        <label class="opt-label"><input type="radio" name="q18" value="B"> B) Linha vertical pontilhada e preenchimento cinza sólido.</label>
+        <label class="opt-label"><input type="radio" name="q18" value="C"> C) Círculo inscrito em losango e asterisco sobre a base.</label>
+        <label class="opt-label"><input type="radio" name="q18" value="D"> D) Linha dupla horizontal e dois círculos concêntricos.</label>
+        <label class="opt-label"><input type="radio" name="q18" value="E"> E) Quadrados vazados e barras verticais tracejadas.</label>
+      </div>
+      <div class="feedback-box" id="feedback-18"></div>
+    </div>
+
+    <!-- Q19 -->
+    <div class="question" id="q-block-19">
+      <div class="q-header">
+        <span class="q-badge">Questão 19</span>
+        <span class="q-tag">Gêmeos Dizigóticos</span>
+      </div>
+      <div class="q-text">
+        Um casal fenotipicamente normal concebeu um primeiro filho acometido por uma afecção autossômica recessiva rara. Em seguida, a mulher engravidou de gêmeos dizigóticos (bivitelinos). A probabilidade de ambos os gêmeos nascerem saudáveis é de:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q19" value="A"> A) 1/16.</label>
+        <label class="opt-label"><input type="radio" name="q19" value="B"> B) 3/16.</label>
+        <label class="opt-label"><input type="radio" name="q19" value="C"> C) 9/16.</label>
+        <label class="opt-label"><input type="radio" name="q19" value="D"> D) 3/4.</label>
+        <label class="opt-label"><input type="radio" name="q19" value="E"> E) 1/4.</label>
+      </div>
+      <div class="feedback-box" id="feedback-19"></div>
+    </div>
+
+    <!-- Q20 -->
+    <div class="question" id="q-block-20">
+      <div class="q-header">
+        <span class="q-badge">Questão 20</span>
+        <span class="q-tag">Amostragem Independente</span>
+      </div>
+      <div class="q-text">
+        Dois indivíduos heterozigotos para um locus autossômico (<em>Aa &times; Aa</em>) tiveram descendentes. Se sortearmos aleatoriamente 3 indivíduos sadios dessa prole, qual a probabilidade de que todos os 3 sejam heterozigotos portadores (<em>Aa</em>)?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q20" value="A"> A) 1/8.</label>
+        <label class="opt-label"><input type="radio" name="q20" value="B"> B) 8/27.</label>
+        <label class="opt-label"><input type="radio" name="q20" value="C"> C) 27/64.</label>
+        <label class="opt-label"><input type="radio" name="q20" value="D"> D) 1/27.</label>
+        <label class="opt-label"><input type="radio" name="q20" value="E"> E) 6/27.</label>
+      </div>
+      <div class="feedback-box" id="feedback-20"></div>
+    </div>
+
+    <!-- PAINEL DE CONTROLE / SUBMISSÃO -->
+    <div class="actions-card">
+      <h3 style="margin-top:0; color:#1e293b;">Finalizou as 20 questões?</h3>
+      <p style="color:#64748b; font-size:9.5pt; margin-bottom:16px;">
+        Ao clicar no botão abaixo, suas respostas serão computadas, o gabarito oficial será revelado item a item e a justificativa genética completa será liberada.
+      </p>
+      <button type="button" class="btn-submit" onclick="corrigirSimulado()">Enviar e Conferir Gabarito</button>
+      <button type="button" class="btn-reset" onclick="reiniciarSimulado()">Limpar Respostas</button>
+      
+      <!-- PAINEL DE PONTUAÇÃO -->
+      <div id="score-board">
+        <div style="font-size:11pt; font-weight:700; color:#2563eb; text-transform:uppercase;">Resultado Final</div>
+        <div class="score-total" id="score-display">0 / 20</div>
+        <div class="score-detail" id="score-msg"></div>
+      </div>
+    </div>
+
+  </form>
+
+</div>
+
+<script>
+  // BANCO DE GABARITO E JUSTIFICATIVAS OFICIAIS
+  const GABARITO = {
+    1: {
+      correta: 'C',
+      justificativa: 'Em F2 (Rosa x Rosa): 1/4 Vermelha, 2/4 Rosa, 1/4 Branca. Fenótipo idêntico a um parental = Vermelha OU Branca = 1/4 + 1/4 = 2/4 (50%). Em 240 plantas: 240 x 0,50 = 120 plantas.'
+    },
+    2: {
+      correta: 'A',
+      justificativa: 'Aa x Aa: 1 AA (letal precoce) : 2 Aa (nanismo) : 1 aa (normal). Espaço amostral dos vivos = 3. Chance de estatura típica (aa) = 1/3. Chance de sexo masculino = 1/2. Total: 1/3 x 1/2 = 1/6.'
+    },
+    3: {
+      correta: 'A',
+      justificativa: 'O casal I-1 e I-2 (normais) gerou o filho II-1 (afetado). Pais iguais gerando filho diferente comprova herança recessiva, sendo ambos heterozigotos obrigatórios (Aa).'
+    },
+    4: {
+      correta: 'C',
+      justificativa: 'Casal II-4 e II-5 (Aa x Aa) gerou III-2 (aa). Como III-3 é sadio, exclui-se aa do espaço amostral (ficam 1 AA e 2 Aa). A chance de ser heterozigoto portador (Aa) é de 2/3.'
+    },
+    5: {
+      correta: 'B',
+      justificativa: 'MN x MN: 1/4 MM, 2/4 MN (1/2), 1/4 NN. Probabilidade de fenótipo idêntico aos pais (MN) = 1/2. Para dois filhos sucessivos: 1/2 x 1/2 = 1/4.'
+    },
+    6: {
+      correta: 'C',
+      justificativa: 'O cruzamento-teste (test-cross) exige cruzar com o homozigoto recessivo (bb) para revelar se o indivíduo dominante produz gametas recessivos.'
+    },
+    7: {
+      correta: 'C',
+      justificativa: 'Homem sadio de pais Aa x Aa tem chance de ser Aa de 2/3. Mulher = Aa (chance 1). Chance de filho aa = 1/4. Menina = 1/2. Multiplicação: 2/3 x 1 x 1/4 x 1/2 = 2/24 = 1/12.'
+    },
+    8: {
+      correta: 'C',
+      justificativa: 'Cauda curta x cauda curta (CLCC x CLCC): 1 CLCL (longa), 2 CLCC (curta) e 1 CCCC (morre). Nascidos vivos: proporção de 2 cauda curta para 1 cauda longa (2:1).'
+    },
+    9: {
+      correta: 'C',
+      justificativa: 'Distribuição binomial: C(4,1) x (3/4)³ x (1/4)¹ = 4 x (27/64) x (1/4) = 108/256.'
+    },
+    10: {
+      correta: 'D',
+      justificativa: 'A separação física dos alelos ocorre na anáfase I da meiose, durante a disjunção dos cromossomos homólogos pareados.'
+    },
+    11: {
+      correta: 'C',
+      justificativa: 'Dominância incompleta: para obter 100% de heterozigotos azuis (PB), deve-se cruzar as linhagens homozigotas puras opostas (PP x BB).'
+    },
+    12: {
+      correta: 'B',
+      justificativa: 'O controle dietético da fenilcetonúria demonstra que o fenótipo final resulta da interação contínua entre genótipo e ambiente.'
+    },
+    13: {
+      correta: 'B',
+      justificativa: 'Expressividade variável define variações na intensidade ou extensão dos sintomas clínicos entre indivíduos que portam o mesmo genótipo mutado.'
+    },
+    14: {
+      correta: 'B',
+      justificativa: 'Pais heterozigotos (Aa x Aa): P(míope aa) = 1/4; P(normal A_) = 3/4. Eventos em sequência: 1/4 x 3/4 = 3/16.'
+    },
+    15: {
+      correta: 'B',
+      justificativa: 'AYa x AYa: 1 AYAY (letal), 2 AYa (amarelos), 1 aa (agouti). Nascidos vivos: 2/3 amarelos e 1/3 agouti. Em 120 filhotes: 80 amarelos e 40 agouti.'
+    },
+    16: {
+      correta: 'C',
+      justificativa: 'Cc x cc: chance de filho com covinha (Cc) = 1/2. Para três filhos consecutivos: (1/2)³ = 1/8.'
+    },
+    17: {
+      correta: 'C',
+      justificativa: 'Frequência de R_ = 3/4 (75%). Com penetrância de 70%: 0,75 x 0,70 = 0,525, ou seja, 52,5% manifestam flores roxas.'
+    },
+    18: {
+      correta: 'A',
+      justificativa: 'Normas de genealogia médica: linha horizontal dupla = casamento consanguíneo; traço inclinado transversal = óbito.'
+    },
+    19: {
+      correta: 'C',
+      justificativa: 'Gêmeos dizigóticos originam-se de fecundações independentes. P(normal) = 3/4 para cada um. Ambos normais: 3/4 x 3/4 = 9/16.'
+    },
+    20: {
+      correta: 'B',
+      justificativa: 'Em indivíduos sadios de pais Aa x Aa, a probabilidade condicional de ser heterozigoto (Aa) é de 2/3. Para três sadios independentes: (2/3)³ = 8/27.'
+    }
+  };
+
+  // EFEITO VISUAL AO CLICAR EM UMA OPÇÃO
+  document.querySelectorAll('.opt-label').forEach(label => {
+    label.addEventListener('click', function() {
+      const radio = this.querySelector('input[type="radio"]');
+      const groupName = radio.name;
+      document.querySelectorAll(`input[name="${groupName}"]`).forEach(r => {
+        r.closest('.opt-label').classList.remove('user-selected');
+      });
+      this.classList.add('user-selected');
+    });
+  });
+
+  // FUNÇÃO DE CORREÇÃO
+  function corrigirSimulado() {
+    let acertos = 0;
+    let total = 20;
+
+    for (let i = 1; i <= total; i++) {
+      const selected = document.querySelector(`input[name="q${i}"]:checked`);
+      const qBlock = document.getElementById(`q-block-${i}`);
+      const feedback = document.getElementById(`feedback-${i}`);
+      const correctVal = GABARITO[i].correta;
+      const justif = GABARITO[i].justificativa;
+
+      // Reset de estilos da questão
+      qBlock.classList.remove('correct-border', 'incorrect-border');
+      feedback.className = 'feedback-box';
+
+      // Estilizar alternativas
+      const options = qBlock.querySelectorAll('.opt-label');
+      options.forEach(opt => {
+        const input = opt.querySelector('input[type="radio"]');
+        opt.classList.remove('is-correct', 'is-wrong');
+        
+        // Destaca a alternativa correta
+        if (input.value === correctVal) {
+          opt.classList.add('is-correct');
+        }
+        // Se o aluno marcou errado, marca como 'is-wrong'
+        if (selected && selected.value === input.value && selected.value !== correctVal) {
+          opt.classList.add('is-wrong');
+        }
+      });
+
+      // Validação de resposta
+      if (selected && selected.value === correctVal) {
+        acertos++;
+        qBlock.classList.add('correct-border');
+        feedback.classList.add('show', 'correct');
+        feedback.innerHTML = `<strong>Correto!</strong> Alternativa <strong>${correctVal}</strong>. ${justif}`;
+      } else {
+        qBlock.classList.add('incorrect-border');
+        feedback.classList.add('show', 'incorrect');
+        const userChoiceText = selected ? `Você assinalou <strong>${selected.value}</strong>.` : '<em>Você não respondeu este item.</em>';
+        feedback.innerHTML = `<strong>Atenção:</strong> ${userChoiceText} O gabarito oficial é <strong>${correctVal}</strong>.<br>${justif}`;
+      }
+    }
+
+    // Exibir painel de pontuação final
+    const scoreBoard = document.getElementById('score-board');
+    const scoreDisplay = document.getElementById('score-display');
+    const scoreMsg = document.getElementById('score-msg');
+
+    scoreDisplay.innerText = `${acertos} / ${total}`;
+    const porcentagem = (acertos / total) * 100;
+
+    if (porcentagem >= 80) {
+      scoreMsg.innerHTML = `Excelente aproveitamento (${porcentagem}%)! Domínio sólido dos conceitos mendelianos.`;
+      scoreDisplay.style.color = '#059669';
+    } else if (porcentagem >= 50) {
+      scoreMsg.innerHTML = `Bom rendimento (${porcentagem}%). Revise os itens com justificativas para consolidar os pontos fracos.`;
+      scoreDisplay.style.color = '#2563eb';
+    } else {
+      scoreMsg.innerHTML = `Aproveitamento de ${porcentagem}%. Recomendado revisar 1ª Lei, probabilidade condicional e leitura de heredogramas.`;
+      scoreDisplay.style.color = '#dc2626';
+    }
+
+    scoreBoard.style.display = 'block';
+    scoreBoard.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // REINICIAR FORMULÁRIO
+  function reiniciarSimulado() {
+    document.getElementById('simulado-form').reset();
+    document.querySelectorAll('.opt-label').forEach(opt => {
+      opt.classList.remove('user-selected', 'is-correct', 'is-wrong');
+    });
+    document.querySelectorAll('.question').forEach(q => {
+      q.classList.remove('correct-border', 'incorrect-border');
+    });
+    document.querySelectorAll('.feedback-box').forEach(fb => {
+      fb.className = 'feedback-box';
+      fb.innerHTML = '';
+    });
+    document.getElementById('score-board').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>

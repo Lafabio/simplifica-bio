@@ -197,6 +197,59 @@
             color: var(--gray-600);
         }
 
+        .simulados { padding: 36px 0 4px; }
+        .sim-card {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            background: linear-gradient(135deg, var(--green-50), var(--white));
+            border: 1px solid var(--green-100);
+            border-left: 4px solid var(--green-600);
+            border-radius: var(--radius);
+            padding: 28px;
+            box-shadow: var(--shadow);
+        }
+        .sim-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--green-600), var(--green-800));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .sim-badge {
+            display: inline-block;
+            background: var(--green-100);
+            color: var(--green-700);
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            margin-bottom: 8px;
+        }
+        .sim-card h2 { font-size: 1.3rem; font-weight: 800; color: var(--gray-900); margin-bottom: 6px; }
+        .sim-card h2 span { color: var(--green-600); }
+        .sim-card p { color: var(--gray-600); font-size: 0.95rem; margin-bottom: 16px; }
+        .sim-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--green-600);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .sim-btn:hover { background: var(--green-700); }
+
         footer {
             background: var(--gray-900);
             color: rgba(255,255,255,0.7);
@@ -210,6 +263,7 @@
             nav a { font-size: 0.85rem; }
             .page-hero h1 { font-size: 1.7rem; }
             .grupo-list { grid-template-columns: 1fr; }
+            .sim-card { flex-direction: column; align-items: flex-start; }
         }
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
@@ -240,6 +294,24 @@
         <h1>Material de estudo <span>organizado por tema</span></h1>
         <p>Slides das aulas e listas de exercícios para você baixar e estudar onde quiser. Use a busca ou filtre por tipo.</p>
         <div class="page-stats" id="stats"></div>
+    </div>
+</section>
+
+<section class="simulados" aria-labelledby="sim-title">
+    <div class="container">
+        <article class="sim-card">
+            <span class="sim-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg>
+            </span>
+            <div class="sim-body">
+                <span class="sim-badge">Novo</span>
+                <h2 id="sim-title">Simulado Interativo de <span>Genética</span></h2>
+                <p>Questões no formato do ENEM com correção automática e gabarito comentado. Teste seus conhecimentos em Mendel, genética do sangue, herança sexual e muito mais.</p>
+                <a class="sim-btn" href="simulado%20genetica%201.html">Iniciar simulado
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+            </div>
+        </article>
     </div>
 </section>
 
