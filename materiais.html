@@ -198,10 +198,16 @@
         }
 
         .simulados { padding: 36px 0 4px; }
+        .sim-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
         .sim-card {
             display: flex;
-            gap: 24px;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
             background: linear-gradient(135deg, var(--green-50), var(--white));
             border: 1px solid var(--green-100);
             border-left: 4px solid var(--green-600);
@@ -209,6 +215,14 @@
             padding: 28px;
             box-shadow: var(--shadow);
         }
+        .sim-card.soon {
+            background: var(--gray-50);
+            border-color: var(--gray-100);
+            border-left-color: var(--gray-600);
+        }
+        .sim-card.soon .sim-icon { background: linear-gradient(135deg, var(--gray-600), var(--gray-800)); }
+        .sim-card.soon .sim-badge { background: var(--gray-100); color: var(--gray-600); }
+        .sim-card.soon h2 { color: var(--gray-600); }
         .sim-icon {
             width: 64px;
             height: 64px;
@@ -249,6 +263,12 @@
             transition: background 0.2s;
         }
         .sim-btn:hover { background: var(--green-700); }
+        .sim-btn.disabled {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            cursor: not-allowed;
+        }
+        .sim-btn.disabled:hover { background: var(--gray-100); }
 
         footer {
             background: var(--gray-900);
@@ -299,19 +319,32 @@
 
 <section class="simulados" aria-labelledby="sim-title">
     <div class="container">
-        <article class="sim-card">
-            <span class="sim-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg>
-            </span>
-            <div class="sim-body">
-                <span class="sim-badge">Novo</span>
-                <h2 id="sim-title">Simulado Interativo de <span>Genética</span></h2>
-                <p>Questões no formato do ENEM com correção automática e gabarito comentado. Teste seus conhecimentos em Mendel, genética do sangue, herança sexual e muito mais.</p>
-                <a class="sim-btn" href="simulado%20genetica%201.html">Iniciar simulado
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </a>
-            </div>
-        </article>
+        <div class="sim-grid">
+            <article class="sim-card">
+                <span class="sim-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg>
+                </span>
+                <div class="sim-body">
+                    <span class="sim-badge">Novo</span>
+                    <h2 id="sim-title">Simulado Interativo de <span>Genética</span></h2>
+                    <p>Questões no formato do ENEM com correção automática e gabarito comentado. Teste seus conhecimentos em Mendel, genética do sangue, herança sexual e muito mais.</p>
+                    <a class="sim-btn" href="simulado%20genetica%201.html">Iniciar simulado
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                </div>
+            </article>
+            <article class="sim-card soon" aria-disabled="true">
+                <span class="sim-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                </span>
+                <div class="sim-body">
+                    <span class="sim-badge">Em breve</span>
+                    <h2>Novos simulados por aí</h2>
+                    <p>Simulados de Ecologia, Fisiologia e Evolução já estão sendo preparados. Fique ligado: novos temas entram aqui toda semana.</p>
+                    <span class="sim-btn disabled" role="link" aria-disabled="true">Em breve</span>
+                </div>
+            </article>
+        </div>
     </div>
 </section>
 
