@@ -764,6 +764,7 @@
 
 </div>
 
+<script src="avatar.js"></script>
 <script>
   // BANCO DE GABARITO E JUSTIFICATIVAS OFICIAIS
   const GABARITO = {
@@ -924,6 +925,16 @@
     } else {
       scoreMsg.innerHTML = `Aproveitamento de ${porcentagem}%. Recomendado revisar 1ª Lei, probabilidade condicional e leitura de heredogramas.`;
       scoreDisplay.style.color = '#dc2626';
+    }
+
+    if (typeof AvatarStore !== 'undefined' && AvatarStore.carregar()) {
+      const premio = AvatarStore.premiarSimulado(acertos);
+      if (premio && premio.ganho > 0) {
+        scoreMsg.innerHTML += `<br><strong style="color:#059669;">Seu monstro ganhou +${premio.ganho} XP!</strong>`;
+        if (premio.evoluiu) toastEvolucao(premio.perfil.especie, premio.estagioDepois);
+      } else if (premio && premio.ganho === 0) {
+        scoreMsg.innerHTML += '<br><span style="color:#64748b;">Bônus de XP do simulado já conquistado hoje. Volte amanhã!</span>';
+      }
     }
 
     scoreBoard.style.display = 'block';

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Monstro - Cadastro - Simplifica BIO Online</title>
+    <meta name="description" content="Cadastre-se, escolha seu ovo e evolua seu monstro estudando biologia. 10 espécies, ciclos de evolução e progresso comum.">
+    <meta name="robots" content="noindex, follow">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2316a34a'/><text x='50' y='72' font-size='58' font-family='Arial' font-weight='bold' text-anchor='middle' fill='white'>B</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --green-900: #0a3622;
+            --green-800: #14532d;
+            --green-700: #166534;
+            --green-600: #16a34a;
+            --green-500: #22c55e;
+            --green-100: #dcfce7;
+            --green-50: #f0fdf4;
+            --teal-500: #14b8a6;
+            --amber-400: #fbbf24;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 18px 40px -18px rgba(22, 163, 74, 0.45);
+            --radius: 12px;
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            color: var(--gray-800);
+            background: var(--white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+        header {
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 12px 0;
+        }
+        header .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--green-800);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo span { color: var(--green-600); }
+        .logo-icon {
+            width: 38px; height: 38px;
+            background: linear-gradient(135deg, var(--green-600), var(--green-800));
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            transition: transform 0.4s var(--ease);
+        }
+        .logo:hover .logo-icon { transform: rotate(-10deg) scale(1.08); }
+        nav { display: flex; align-items: center; gap: 28px; }
+        nav a { color: var(--gray-600); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
+        nav a:hover { color: var(--green-600); }
+        nav a.active { color: var(--green-700); font-weight: 700; }
+
+        .page-hero {
+            background: linear-gradient(135deg, var(--green-50), var(--white), var(--green-50));
+            background-size: 220% 220%;
+            animation: heroFlow 14s ease-in-out infinite;
+            padding: 56px 0 44px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: -45%;
+            left: -10%;
+            width: 460px;
+            height: 460px;
+            background: radial-gradient(circle, rgba(34,197,94,0.14) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: blobPulse 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .page-hero h1 { font-size: 2.2rem; font-weight: 800; color: var(--gray-900); margin-bottom: 10px; position: relative; }
+        .page-hero h1 span {
+            background: linear-gradient(110deg, var(--green-600), var(--teal-500), var(--green-500), var(--green-600));
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shineText 6s linear infinite;
+        }
+        .page-hero p { color: var(--gray-600); max-width: 560px; margin: 0 auto; position: relative; }
+
+        main { padding: 48px 0 80px; }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--gray-100);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 32px;
+        }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+        .field label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+        .field input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1px solid var(--gray-100);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+        .field input:focus { border-color: var(--green-500); box-shadow: 0 0 0 4px rgba(34,197,94,0.15); }
+        .erro { color: #e11d48; font-size: 0.85rem; margin-top: 6px; display: none; }
+
+        .escolha-titulo {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+        .escolha-sub { color: var(--gray-600); font-size: 0.95rem; margin-bottom: 20px; }
+
+        .ovo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+        .ovo-card {
+            border: 2px solid var(--gray-100);
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s var(--ease);
+            font-family: inherit;
+        }
+        .ovo-card svg { margin: 0 auto; transition: transform 0.35s var(--ease); }
+        .ovo-card strong { display: block; font-size: 0.98rem; color: var(--gray-900); margin-top: 8px; }
+        .ovo-card span { font-size: 0.78rem; color: var(--gray-600); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+        .ovo-card:hover { transform: translateY(-5px); border-color: var(--green-500); box-shadow: var(--shadow-glow); }
+        .ovo-card:hover svg { transform: rotate(-6deg) scale(1.07); }
+        .ovo-card.sel { border-color: var(--green-600); background: var(--green-50); box-shadow: var(--shadow-glow); }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.25s var(--ease);
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -80%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(100deg, transparent, rgba(255,255,255,0.45), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.5s var(--ease);
+        }
+        .btn:hover::after { left: 130%; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--green-500), var(--green-700));
+            background-size: 160% 160%;
+            color: var(--white);
+        }
+        .btn-primary:hover { background-position: 100% 50%; transform: translateY(-2px); box-shadow: var(--shadow-glow); }
+        .btn-ghost { background: var(--gray-100); color: var(--gray-600); }
+        .btn-ghost:hover { background: #e5e7eb; color: #e11d48; }
+
+        .perfil-topo {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 32px;
+            align-items: center;
+        }
+        .avatar-vitrine {
+            background: radial-gradient(circle at 50% 35%, var(--green-50), var(--white));
+            border: 1px solid var(--green-100);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+        }
+        .avatar-vitrine .monstro { animation: floatY 5s ease-in-out infinite; display: inline-block; }
+        .avatar-vitrine .monstro svg { max-width: 100%; height: auto; }
+        .avatar-vitrine .nome-monstro { font-size: 1.3rem; font-weight: 800; color: var(--gray-900); margin-top: 4px; }
+        .avatar-vitrine .tipo-chip {
+            display: inline-block;
+            margin-top: 6px;
+            background: var(--green-100);
+            color: var(--green-700);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 12px;
+            border-radius: 999px;
+        }
+
+        .perfil-info h2 { font-size: 1.7rem; font-weight: 800; color: var(--gray-900); }
+        .perfil-info .ola { color: var(--gray-600); margin-bottom: 16px; }
+        .estagio-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--green-500), var(--green-700));
+            color: white;
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 8px 18px;
+            border-radius: 999px;
+            box-shadow: 0 8px 18px -8px rgba(22,163,74,0.8);
+            margin-bottom: 18px;
+        }
+        .xp-total { font-size: 0.95rem; color: var(--gray-600); margin-bottom: 8px; }
+        .xp-total strong { color: var(--green-700); font-size: 1.1rem; }
+
+        .barra { background: var(--gray-100); border-radius: 999px; height: 16px; overflow: hidden; margin-bottom: 10px; }
+        .barra .fill {
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--green-500), var(--teal-500));
+            background-size: 200% 100%;
+            animation: heroFlow 4s linear infinite;
+            transition: width 0.9s var(--ease);
+        }
+        .barra-legenda { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--gray-600); margin-bottom: 6px; }
+        .barra-dica { font-size: 0.9rem; color: var(--gray-600); }
+        .barra-dica strong { color: var(--green-700); }
+
+        .separador { border: none; border-top: 1px solid var(--gray-100); margin: 32px 0; }
+
+        .subtitulo {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+        }
+        .subtexto { color: var(--gray-600); font-size: 0.95rem; margin-bottom: 20px; }
+
+        .ciclo { display: flex; gap: 12px; flex-wrap: wrap; }
+        .ciclo-etapa {
+            flex: 1;
+            min-width: 140px;
+            background: var(--gray-50);
+            border: 2px solid var(--gray-100);
+            border-radius: var(--radius);
+            padding: 14px 10px;
+            text-align: center;
+            transition: all 0.3s var(--ease);
+        }
+        .ciclo-etapa strong { display: block; font-size: 0.95rem; color: var(--gray-900); }
+        .ciclo-etapa span { font-size: 0.78rem; color: var(--gray-600); font-weight: 600; }
+        .ciclo-etapa.atual {
+            border-color: var(--green-500);
+            background: var(--green-50);
+            box-shadow: var(--shadow-glow);
+            transform: translateY(-4px);
+        }
+        .ciclo-etapa.trancado { opacity: 0.5; filter: grayscale(0.7); }
+        .ciclo-mini svg { margin: 0 auto; }
+
+        .xp-lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+        .xp-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--green-50);
+            border: 1px solid var(--green-100);
+            border-radius: var(--radius);
+            padding: 16px;
+            transition: transform 0.25s var(--ease);
+        }
+        .xp-item:hover { transform: translateY(-3px); }
+        .xp-item .xp-valor {
+            background: linear-gradient(135deg, var(--green-500), var(--green-700));
+            color: white;
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 8px 12px;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+        .xp-item strong { display: block; font-size: 0.95rem; color: var(--gray-900); }
+        .xp-item span { font-size: 0.82rem; color: var(--gray-600); }
+
+        footer {
+            background: var(--gray-900);
+            color: rgba(255,255,255,0.7);
+            padding: 32px 0;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        footer a { color: #22c55e; text-decoration: none; }
+
+        /* Evolução */
+        .evolucao-toast {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 54, 34, 0.75);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 24px;
+            animation: fadeIn 0.3s ease;
+        }
+        .evolucao-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 36px 44px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            max-width: 420px;
+            animation: evolvePop 0.55s var(--ease);
+        }
+        .evolucao-label {
+            font-size: 0.85rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--amber-400);
+            margin-bottom: 8px;
+        }
+        .evolucao-art { animation: floatY 3s ease-in-out infinite; }
+        .evolucao-art svg { margin: 0 auto; }
+        .evolucao-card h3 { font-size: 1.25rem; color: var(--gray-900); margin: 8px 0 18px; }
+        .evolucao-card h3 span { color: var(--green-600); }
+        .evolucao-ok {
+            background: linear-gradient(135deg, var(--green-500), var(--green-700));
+            color: white;
+            border: none;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.25s var(--ease);
+        }
+        .evolucao-ok:hover { transform: translateY(-2px); }
+
+        .sparkle { animation: twinkle 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+        .aura { animation: spin 9s linear infinite; transform-origin: center; transform-box: fill-box; }
+
+        .escondido { display: none !important; }
+
+        @keyframes heroFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes blobPulse { 0%, 100% { transform: scale(1); opacity: 0.85; } 50% { transform: scale(1.12); opacity: 1; } }
+        @keyframes shineText { to { background-position: 300% center; } }
+        @keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        @keyframes twinkle { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.6; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes evolvePop { 0% { transform: scale(0.6); opacity: 0; } 70% { transform: scale(1.06); } 100% { transform: scale(1); opacity: 1; } }
+
+        @media (max-width: 768px) {
+            nav { gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
+            .page-hero h1 { font-size: 1.7rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .perfil-topo { grid-template-columns: 1fr; }
+            .ciclo { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 8px; }
+            .ciclo-etapa { min-width: 130px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            * { transition: none !important; animation: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <a href="index.html" class="logo" aria-label="Simplifica BIO - página inicial">
+            <span class="logo-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20c0-5 2-8 8-9-1 6-4 9-8 9z"/><path d="M4 20c3-1 5-3 8-9"/></svg>
+            </span>
+            Simplifica <span>BIO</span>
+        </a>
+        <nav>
+            <a href="index.html">Início</a>
+            <a href="materiais.html">Materiais</a>
+            <a href="cadastro.html" class="active">Meu monstro</a>
+            <a href="index.html#contato">Fale conosco</a>
+        </nav>
+    </div>
+</header>
+
+<section class="page-hero">
+    <div class="container">
+        <h1>Seu monstro começa no <span>ovo</span></h1>
+        <p>Toda matrícula nasce com um ovo. Estude, faça simulados e ganhe XP para eclodir e evoluir até a forma Lenda — 10 espécies à sua escolha.</p>
+    </div>
+</section>
+
+<main>
+    <div class="container">
+
+        <div id="view-cadastro" class="escondido">
+            <form id="form-cadastro" class="card" novalidate>
+                <h2 class="escolha-titulo">Criar cadastro</h2>
+                <p class="escolha-sub">Digite seus dados e escolha qual ovo será seu companheiro de estudos.</p>
+
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="nome">Nome do aluno</label>
+                        <input type="text" id="nome" placeholder="Como podemos te chamar?" autocomplete="name" maxlength="40">
+                        <p class="erro" id="erro-nome">Digite seu nome (mínimo 2 letras).</p>
+                    </div>
+                    <div class="field">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" placeholder="voce@email.com" autocomplete="email" maxlength="80">
+                        <p class="erro" id="erro-email">Digite um e-mail válido.</p>
+                    </div>
+                </div>
+
+                <h3 class="escolha-titulo">Escolha seu ovo</h3>
+                <p class="escolha-sub">Cada ovo esconde uma espécie diferente de monstrinho.</p>
+                <div class="ovo-grid" id="ovo-grid" role="radiogroup" aria-label="Escolha o ovo"></div>
+                <p class="erro" id="erro-especie" style="margin-bottom:16px;">Escolha um ovo para continuar.</p>
+
+                <button type="submit" class="btn btn-primary">Criar meu monstro (+50 XP)</button>
+            </form>
+        </div>
+
+        <div id="view-perfil" class="escondido">
+            <div class="card">
+                <div class="perfil-topo">
+                    <div class="avatar-vitrine">
+                        <div class="monstro" id="monstro-atual"></div>
+                        <div class="nome-monstro" id="p-especie"></div>
+                        <span class="tipo-chip" id="p-tipo"></span>
+                    </div>
+                    <div class="perfil-info">
+                        <p class="ola" id="p-ola"></p>
+                        <h2 id="p-nome"></h2>
+                        <div class="estagio-badge" id="p-estagio"></div>
+                        <p class="xp-total">Progresso total: <strong id="p-xp"></strong></p>
+                        <div class="barra-legenda"><span id="p-atual"></span><span id="p-proximo"></span></div>
+                        <div class="barra"><div class="fill" id="p-fill" style="width:0%"></div></div>
+                        <p class="barra-dica" id="p-dica"></p>
+                    </div>
+                </div>
+
+                <hr class="separador">
+
+                <h3 class="subtitulo">Ciclo de desenvolvimento</h3>
+                <p class="subtexto">O progresso é comum a todas as espécies: todo monstro nasce de ovo e segue os mesmos 5 estágios.</p>
+                <div id="ciclo-container"></div>
+
+                <hr class="separador">
+
+                <h3 class="subtitulo">Como ganhar XP</h3>
+                <p class="subtexto">O XP é comum para todos os monstros — quanto mais você estuda, mais seu monstro evolui.</p>
+                <div class="xp-lista" id="xp-lista"></div>
+
+                <hr class="separador">
+                <button class="btn btn-ghost" id="btn-reset">Recomeçar do zero (apagar perfil)</button>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2026 Simplifica BIO Online. Todos os direitos reservados. | <a href="index.html">Voltar ao início</a></p>
+    </div>
+</footer>
+
+<script src="avatar.js"></script>
+<script>
+    const viewCadastro = document.getElementById('view-cadastro');
+    const viewPerfil = document.getElementById('view-perfil');
+    let especieEscolhida = null;
+
+    function renderizarOvos() {
+        const grid = document.getElementById('ovo-grid');
+        grid.innerHTML = ESPECIES.map(sp =>
+            `<button type="button" class="ovo-card" data-especie="${sp.id}" role="radio" aria-checked="false">
+                ${eggSVG(sp, 96)}
+                <strong>${sp.nome}</strong>
+                <span>${sp.tipo}</span>
+            </button>`
+        ).join('');
+        grid.querySelectorAll('.ovo-card').forEach(btn => {
+            btn.addEventListener('click', () => {
+                grid.querySelectorAll('.ovo-card').forEach(b => { b.classList.remove('sel'); b.setAttribute('aria-checked', 'false'); });
+                btn.classList.add('sel');
+                btn.setAttribute('aria-checked', 'true');
+                especieEscolhida = btn.dataset.especie;
+                document.getElementById('erro-especie').style.display = 'none';
+            });
+        });
+    }
+
+    function renderizarPerfil(animar) {
+        const perfil = AvatarStore.carregar();
+        if (!perfil) { mostrarCadastro(); return; }
+        const sp = getEspecie(perfil.especie);
+        const prog = progressoXP(perfil.xp);
+        const nomeEstagio = ESTAGIOS[prog.i].nome;
+
+        document.getElementById('monstro-atual').innerHTML = monstroSVG(perfil.especie, prog.i, 240);
+        document.getElementById('p-especie').textContent = sp.nome;
+        document.getElementById('p-tipo').textContent = sp.tipo;
+        document.getElementById('p-ola').textContent = `Olá, ${perfil.nome}! Seu companheiro está em fase de ${nomeEstagio}.`;
+        document.getElementById('p-nome').textContent = perfil.nome;
+        document.getElementById('p-estagio').textContent = 'Estágio: ' + nomeEstagio;
+        document.getElementById('p-xp').textContent = perfil.xp + ' XP';
+        document.getElementById('p-atual').textContent = ESTAGIOS[prog.i].xp + ' XP';
+        document.getElementById('p-proximo').textContent = prog.proximo ? prog.proximo.xp + ' XP' : 'Máximo';
+        requestAnimationFrame(() => {
+            document.getElementById('p-fill').style.width = Math.round(prog.pct * 100) + '%';
+        });
+        document.getElementById('p-dica').innerHTML = prog.proximo
+            ? `Faltam <strong>${prog.faltam} XP</strong> para evoluir para <strong>${prog.proximo.nome}</strong>. ${prog.proximo.desc}`
+            : `<strong>Forma Lenda alcançada!</strong> Seu monstro chegou ao topo do ciclo.`;
+
+        document.getElementById('ciclo-container').innerHTML = cicloHTML(perfil.xp, 76);
+
+        document.getElementById('xp-lista').innerHTML = XP_EVENTOS.map(e =>
+            `<div class="xp-item">
+                <span class="xp-valor">+${e.xp}</span>
+                <div><strong>${e.fonte}</strong><span>${e.acao}</span></div>
+            </div>`
+        ).join('');
+
+        viewPerfil.classList.remove('escondido');
+        viewCadastro.classList.add('escondido');
+
+        if (animar && animar.evoluiu) {
+            toastEvolucao(perfil.especie, animar.estagioDepois);
+        }
+    }
+
+    function mostrarCadastro() {
+        renderizarOvos();
+        viewCadastro.classList.remove('escondido');
+        viewPerfil.classList.add('escondido');
+    }
+
+    document.getElementById('form-cadastro').addEventListener('submit', ev => {
+        ev.preventDefault();
+        const nome = document.getElementById('nome').value.trim();
+        const email = document.getElementById('email').value.trim();
+        let ok = true;
+
+        const nomeOk = nome.length >= 2;
+        document.getElementById('erro-nome').style.display = nomeOk ? 'none' : 'block';
+        if (!nomeOk) ok = false;
+
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        document.getElementById('erro-email').style.display = emailOk ? 'none' : 'block';
+        if (!emailOk) ok = false;
+
+        const especieOk = !!especieEscolhida;
+        document.getElementById('erro-especie').style.display = especieOk ? 'none' : 'block';
+        if (!especieOk) ok = false;
+
+        if (!ok) return;
+
+        AvatarStore.criar({ nome, email, especie: especieEscolhida });
+        renderizarPerfil(null);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    document.getElementById('btn-reset').addEventListener('click', () => {
+        if (confirm('Apagar seu perfil e começar tudo de novo com um novo ovo?')) {
+            AvatarStore.apagar();
+            especieEscolhida = null;
+            mostrarCadastro();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    });
+
+    if (AvatarStore.carregar()) {
+        renderizarPerfil(null);
+    } else {
+        mostrarCadastro();
+    }
+</script>
+
+</body>
+</html>

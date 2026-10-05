@@ -401,6 +401,7 @@
         <nav>
             <a href="index.html">Início</a>
             <a href="materiais.html" class="active">Materiais</a>
+            <a href="cadastro.html">Meu monstro</a>
             <a href="index.html#contato">Fale conosco</a>
         </nav>
     </div>
@@ -470,6 +471,7 @@
 </footer>
 
 <script src="materiais.js"></script>
+<script src="avatar.js"></script>
 <script>
     function esc(s) {
         return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -557,6 +559,13 @@
             });
         }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
         targets.forEach(el => io.observe(el));
+    }
+
+    if (typeof AvatarStore !== 'undefined' && AvatarStore.carregar()) {
+        const premio = AvatarStore.premiarMateriais();
+        if (premio && premio.evoluiu) {
+            toastEvolucao(premio.perfil.especie, premio.estagioDepois);
+        }
     }
 </script>
 </body>
