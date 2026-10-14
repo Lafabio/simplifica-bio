@@ -648,7 +648,7 @@
             doc.setTextColor(255, 255, 255);
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(13);
-            doc.text('Simplifica BIO — Aula de Biologia', 10, 10.5);
+            doc.text('BIOvorazes — Aula de Biologia', 10, 10.5);
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(9);
             doc.setTextColor(60, 70, 80);
@@ -659,9 +659,9 @@
             doc.addImage(url, 'PNG', 10, 28, w, h);
             doc.setFontSize(7.5);
             doc.setTextColor(140, 150, 160);
-            doc.text('Gerado em ' + new Date().toLocaleString('pt-BR') + ' — Simplifica BIO Online', 10, 28 + h + 8);
+            doc.text('Gerado em ' + new Date().toLocaleString('pt-BR') + ' — BIOvorazes', 10, 28 + h + 8);
             const blob = doc.output('blob');
-            const file = new File([blob], 'aula-simplifica-bio-' + slug() + '.pdf', { type: 'application/pdf' });
+            const file = new File([blob], 'aula-biovorazes-' + slug() + '.pdf', { type: 'application/pdf' });
             oferecer(file, 'PDF da aula pronto para compartilhar');
         } catch (e) {
             toast('Erro ao gerar o PDF', 'erro');
@@ -741,7 +741,7 @@
         const f = estado.arquivo;
         if (!f) return;
         try {
-            await navigator.share({ files: [f], title: 'Simplifica BIO — Aula', text: 'Aula compartilhada pelo quadro branco da Simplifica BIO.' });
+            await navigator.share({ files: [f], title: 'BIOvorazes — Aula', text: 'Aula compartilhada pelo quadro branco da BIOvorazes.' });
             $('modal-arquivo').classList.add('escondido');
         } catch (e) {
             if (e.name !== 'AbortError') toast('Não foi possível compartilhar — use "Baixar"', 'erro');
