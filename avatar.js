@@ -21,6 +21,7 @@ const ESTAGIOS = [
 
 const XP_EVENTOS = [
     { fonte: 'Cadastro do monstro', xp: 50, acao: 'Feito!' },
+    { fonte: 'Aula na sala', xp: 20, acao: '+20 por dia' },
     { fonte: 'Simulado concluído', xp: 40, acao: '+2 por acerto, 1x por dia' },
     { fonte: 'Estudo nos materiais', xp: 10, acao: '+10 por dia' }
 ];
@@ -62,7 +63,7 @@ const AvatarStore = {
             nome, email, especie,
             xp: 50,
             criadoEm: new Date().toISOString(),
-            diario: { data: hoje, simulado: 0, materiais: 0 }
+            diario: { data: hoje, aula: 0, simulado: 0, materiais: 0 }
         };
         this.salvar(perfil);
         return perfil;
@@ -80,7 +81,7 @@ const AvatarStore = {
         const perfil = this.carregar();
         if (!perfil) return null;
         const hoje = new Date().toISOString().slice(0, 10);
-        if (perfil.diario.data !== hoje) perfil.diario = { data: hoje, simulado: 0, materiais: 0 };
+        if (perfil.diario.data !== hoje) perfil.diario = { data: hoje, aula: 0, simulado: 0, materiais: 0 };
         const merecido = acertos * 2;
         const ganho = Math.max(0, Math.min(40, merecido) - perfil.diario.simulado);
         if (ganho === 0) { this.salvar(perfil); return { perfil, ganho: 0, evoluiu: false }; }
@@ -93,12 +94,23 @@ const AvatarStore = {
         const perfil = this.carregar();
         if (!perfil) return null;
         const hoje = new Date().toISOString().slice(0, 10);
-        if (perfil.diario.data !== hoje) perfil.diario = { data: hoje, simulado: 0, materiais: 0 };
+        if (perfil.diario.data !== hoje) perfil.diario = { data: hoje, aula: 0, simulado: 0, materiais: 0 };
         if (perfil.diario.materiais > 0) return { perfil, ganho: 0, evoluiu: false };
         perfil.diario.materiais = 10;
         this.salvar(perfil);
         const r = this.addXP(10);
         return { perfil: r.perfil, ganho: 10, evoluiu: r.evoluiu, estagioAntes: r.estagioAntes, estagioDepois: r.estagioDepois };
+    },
+    premiarAula() {
+        const perfil = this.carregar();
+        if (!perfil) return null;
+        const hoje = new Date().toISOString().slice(0, 10);
+        if (perfil.diario.data !== hoje) perfil.diario = { data: hoje, aula: 0, simulado: 0, materiais: 0 };
+        if (perfil.diario.aula > 0) return { perfil, ganho: 0, evoluiu: false };
+        perfil.diario.aula = 20;
+        this.salvar(perfil);
+        const r = this.addXP(20);
+        return { perfil: r.perfil, ganho: 20, evoluiu: r.evoluiu, estagioAntes: r.estagioAntes, estagioDepois: r.estagioDepois };
     },
     apagar() {
         localStorage.removeItem(this.chave);

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Estudo - Simplifica BIO Online</title>
+    <meta name="description" content="Plano de estudo de Biologia para o ENEM em 6 semanas, com progresso salvo a cada item concluído.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2316a34a'/><text x='50' y='72' font-size='58' font-family='Arial' font-weight='bold' text-anchor='middle' fill='white'>B</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --green-900: #0a3622;
+            --green-800: #14532d;
+            --green-700: #166534;
+            --green-600: #16a34a;
+            --green-500: #22c55e;
+            --green-100: #dcfce7;
+            --green-50: #f0fdf4;
+            --teal-500: #14b8a6;
+            --sky-500: #0ea5e9;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 18px 40px -18px rgba(22, 163, 74, 0.45);
+            --radius: 12px;
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            color: var(--gray-800);
+            background: var(--white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+        header {
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 12px 0;
+        }
+        header .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--green-800);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo span { color: var(--green-600); }
+        .logo-icon {
+            width: 38px; height: 38px;
+            background: linear-gradient(135deg, var(--green-600), var(--green-800));
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            transition: transform 0.4s var(--ease);
+        }
+        .logo:hover .logo-icon { transform: rotate(-10deg) scale(1.08); }
+        nav { display: flex; align-items: center; gap: 24px; }
+        nav a { color: var(--gray-600); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
+        nav a:hover { color: var(--green-600); }
+        nav a.active { color: var(--green-700); font-weight: 700; }
+
+        .page-hero {
+            background: linear-gradient(135deg, var(--green-50), var(--white), var(--green-50));
+            background-size: 220% 220%;
+            animation: heroFlow 14s ease-in-out infinite;
+            padding: 52px 0 42px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: -45%;
+            left: -8%;
+            width: 460px;
+            height: 460px;
+            background: radial-gradient(circle, rgba(34,197,94,0.14) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: blobPulse 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .page-hero h1 { font-size: 2.1rem; font-weight: 800; color: var(--gray-900); margin-bottom: 10px; position: relative; }
+        .page-hero h1 span {
+            background: linear-gradient(110deg, var(--green-600), var(--teal-500), var(--green-500), var(--green-600));
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shineText 6s linear infinite;
+        }
+        .page-hero p { color: var(--gray-600); max-width: 580px; margin: 0 auto; position: relative; }
+
+        main { padding: 36px 0 80px; }
+
+        .progresso-topo {
+            background: var(--white);
+            border: 1px solid var(--gray-100);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 22px 26px;
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            flex-wrap: wrap;
+            margin-bottom: 26px;
+        }
+        .anel {
+            --pct: 0deg;
+            width: 84px; height: 84px;
+            border-radius: 50%;
+            background: conic-gradient(var(--green-600) var(--pct), var(--gray-100) 0);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.6s var(--ease);
+        }
+        .anel .buraco {
+            width: 64px; height: 64px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: var(--green-700);
+        }
+        .progresso-info { flex: 1; min-width: 220px; }
+        .progresso-info h2 { font-size: 1.15rem; font-weight: 800; color: var(--gray-900); margin-bottom: 4px; }
+        .progresso-info p { font-size: 0.88rem; color: var(--gray-600); margin-bottom: 12px; }
+        .barra { background: var(--gray-100); border-radius: 999px; height: 14px; overflow: hidden; }
+        .barra .fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--green-500), var(--teal-500)); background-size: 200% 100%; transition: width 0.7s var(--ease); }
+        .btn-reset {
+            border: 1px solid var(--gray-100);
+            background: var(--white);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.83rem;
+            font-family: inherit;
+            cursor: pointer;
+            color: var(--gray-600);
+            transition: all 0.2s var(--ease);
+        }
+        .btn-reset:hover { border-color: #fca5a5; color: #dc2626; }
+
+        .semanas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+        .semana {
+            background: var(--white);
+            border: 1px solid var(--gray-100);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 22px;
+            transition: all 0.3s var(--ease);
+            position: relative;
+            overflow: hidden;
+        }
+        .semana:hover { box-shadow: var(--shadow-lg); }
+        .semana.atual { border-color: var(--green-500); box-shadow: var(--shadow-glow); }
+        .semana.concluida { background: var(--green-50); }
+        .semana-topo { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+        .semana-num {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--gray-600);
+        }
+        .semana-badge {
+            font-size: 0.66rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+        .semana.atual .semana-badge { background: #fef3c7; color: #b45309; }
+        .semana.concluida .semana-badge { background: var(--green-600); color: #fff; }
+        .semana h3 { font-size: 1.08rem; font-weight: 800; color: var(--gray-900); margin-bottom: 14px; }
+        .itens { display: flex; flex-direction: column; gap: 9px; }
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            color: var(--gray-600);
+            padding: 7px 9px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            user-select: none;
+        }
+        .item:hover { background: var(--gray-50); }
+        .item input { display: none; }
+        .item .caixa {
+            width: 20px; height: 20px;
+            flex-shrink: 0;
+            border: 2px solid var(--gray-100);
+            border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s var(--ease);
+            background: var(--white);
+        }
+        .item .caixa svg { width: 12px; height: 12px; color: #fff; opacity: 0; transform: scale(0.4); transition: all 0.2s var(--ease); }
+        .item input:checked + .caixa { background: var(--green-600); border-color: var(--green-600); }
+        .item input:checked + .caixa svg { opacity: 1; transform: scale(1); }
+        .item input:checked ~ .rotulo { color: var(--green-700); font-weight: 700; text-decoration: line-through; text-decoration-color: rgba(22,163,74,0.4); }
+
+        footer {
+            background: var(--gray-900);
+            color: rgba(255,255,255,0.7);
+            padding: 32px 0;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        footer a { color: #22c55e; text-decoration: none; }
+
+        @keyframes heroFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes blobPulse { 0%, 100% { transform: scale(1); opacity: 0.85; } 50% { transform: scale(1.12); opacity: 1; } }
+        @keyframes shineText { to { background-position: 300% center; } }
+
+        @media (max-width: 960px) { .semanas { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) {
+            nav { gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
+            .page-hero h1 { font-size: 1.65rem; }
+        }
+        @media (max-width: 600px) { .semanas { grid-template-columns: 1fr; } }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            * { transition: none !important; animation: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <a href="index.html" class="logo" aria-label="Simplifica BIO - página inicial">
+            <span class="logo-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20c0-5 2-8 8-9-1 6-4 9-8 9z"/><path d="M4 20c3-1 5-3 8-9"/></svg>
+            </span>
+            Simplifica <span>BIO</span>
+        </a>
+        <nav>
+            <a href="index.html">Início</a>
+            <a href="materiais.html">Materiais</a>
+            <a href="cadastro.html">Meu monstro</a>
+            <a href="sala.html">Sala de aula</a>
+            <a href="aula.html" class="active">Minha área</a>
+            <a href="index.html#contato">Fale conosco</a>
+        </nav>
+    </div>
+</header>
+
+<section class="page-hero">
+    <div class="container">
+        <h1>Plano de <span>estudo</span></h1>
+        <p>6 semanas organizadas cobrindo os temas do ENEM — marque cada item e seu progresso fica salvo no navegador.</p>
+    </div>
+</section>
+
+<main>
+    <div class="container">
+        <div class="progresso-topo">
+            <div class="anel" id="anel"><div class="buraco" id="pct">0%</div></div>
+            <div class="progresso-info">
+                <h2>Seu progresso</h2>
+                <p id="resumo">Comece marcando o primeiro item do plano.</p>
+                <div class="barra"><div class="fill" id="fill" style="width:0%"></div></div>
+            </div>
+            <button class="btn-reset" id="btn-reset">Reiniciar plano</button>
+        </div>
+
+        <div class="semanas" id="semanas"></div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2026 Simplifica BIO Online. Todos os direitos reservados. | <a href="index.html">Voltar ao início</a></p>
+    </div>
+</footer>
+
+<script>
+    const SEMANAS = [
+        { n: 1, tema: 'Bioquímica', itens: ['Moléculas da vida', 'Enzimas e metabolismo', 'Fotossíntese', 'Respiração celular'] },
+        { n: 2, tema: 'Citologia', itens: ['Membranas e transporte', 'Organelas celulares', 'Divisão celular', 'Ciclo celular'] },
+        { n: 3, tema: 'Genética', itens: ['Leis de Mendel', 'Cruzamentos complexos', 'DNA, RNA e síntese proteica', 'Mutações e biotecnologia'] },
+        { n: 4, tema: 'Ecologia', itens: ['Cadeias e teias alimentares', 'Ciclos biogeoquímicos', 'Relações ecológicas', 'Ecossistemas brasileiros'] },
+        { n: 5, tema: 'Evolução', itens: ['Teorias evolutivas', 'Seleção natural', 'Biodiversidade e conservação', 'Especiação'] },
+        { n: 6, tema: 'Fisiologia', itens: ['Sistema nervoso e endócrino', 'Circulatório e respiratório', 'Excretor e digestório', 'Imunologia'] }
+    ];
+    const CHAVE = 'simplifica_plano_v1';
+
+    function carregar() {
+        try {
+            const bruto = localStorage.getItem(CHAVE);
+            return bruto ? JSON.parse(bruto) : { feitos: {} };
+        } catch (e) { return { feitos: {} }; }
+    }
+    function salvar(estado) {
+        localStorage.setItem(CHAVE, JSON.stringify(estado));
+    }
+
+    const estado = carregar();
+    let total = 0;
+    SEMANAS.forEach((s, si) => s.itens.forEach((it, ii) => { total++; if (estado.feitos['s' + si + 'i' + ii]) { } }));
+
+    function idItem(si, ii) { return 's' + si + 'i' + ii; }
+
+    function renderizar() {
+        const grid = document.getElementById('semanas');
+        let feitos = 0;
+        let primeiraPendente = -1;
+        SEMANAS.forEach((s, si) => {
+            const pendentes = s.itens.filter((it, ii) => !estado.feitos[idItem(si, ii)]).length;
+            if (pendentes > 0 && primeiraPendente === -1) primeiraPendente = si;
+        });
+        grid.innerHTML = SEMANAS.map((s, si) => {
+            const feitosSem = s.itens.filter((it, ii) => estado.feitos[idItem(si, ii)]).length;
+            feitos += feitosSem;
+            const concluida = feitosSem === s.itens.length;
+            const atual = si === primeiraPendente;
+            const badge = concluida ? 'Concluída' : (atual ? 'Em andamento' : 'Pendente');
+            return `<div class="semana${concluida ? ' concluida' : (atual ? ' atual' : '')}">
+                <div class="semana-topo">
+                    <span class="semana-num">Semana ${s.n}</span>
+                    <span class="semana-badge">${badge}</span>
+                </div>
+                <h3>${s.tema}</h3>
+                <div class="itens">
+                    ${s.itens.map((it, ii) => {
+                        const id = idItem(si, ii);
+                        const ok = !!estado.feitos[id];
+                        return `<label class="item">
+                            <input type="checkbox" data-id="${id}"${ok ? ' checked' : ''}>
+                            <span class="caixa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+                            <span class="rotulo">${it}</span>
+                        </label>`;
+                    }).join('')}
+                </div>
+            </div>`;
+        }).join('');
+
+        grid.querySelectorAll('input[data-id]').forEach(cb => {
+            cb.addEventListener('change', () => {
+                estado.feitos[cb.dataset.id] = cb.checked;
+                if (!cb.checked) delete estado.feitos[cb.dataset.id];
+                salvar(estado);
+                renderizar();
+            });
+        });
+
+        const pct = total ? Math.round(feitos / total * 100) : 0;
+        document.getElementById('pct').textContent = pct + '%';
+        document.getElementById('anel').style.setProperty('--pct', (pct * 3.6) + 'deg');
+        requestAnimationFrame(() => {
+            document.getElementById('fill').style.width = pct + '%';
+        });
+        document.getElementById('resumo').textContent = pct === 100
+            ? 'Plano concluído! Você cobriu todos os temas do ENEM.'
+            : feitos + ' de ' + total + ' itens concluídos — ' + (total - feitos) + ' pendentes.';
+    }
+
+    document.getElementById('btn-reset').addEventListener('click', () => {
+        if (confirm('Reiniciar o plano do zero? Todo o progresso será apagado.')) {
+            localStorage.removeItem(CHAVE);
+            location.reload();
+        }
+    });
+
+    renderizar();
+</script>
+
+</body>
+</html>

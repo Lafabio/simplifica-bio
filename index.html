@@ -667,6 +667,18 @@
         }
         .testimonial footer strong { display: block; font-size: 0.9rem; color: var(--gray-900); }
         .testimonial footer span { font-size: 0.8rem; color: var(--gray-600); }
+        .testimonial-destaque {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--green-50), var(--white) 70%);
+            border: 1px solid var(--green-100);
+            padding: 36px 40px;
+        }
+        .testimonial-destaque blockquote {
+            font-size: 1.08rem;
+            line-height: 1.7;
+            color: var(--gray-800);
+        }
+        .testimonial-destaque::before { color: var(--green-100); font-size: 7rem; }
 
         /* Pricing */
         .pricing-grid {
@@ -1127,6 +1139,8 @@
             <a href="#faq">FAQ</a>
             <a href="materiais.html">Materiais</a>
             <a href="cadastro.html">Meu monstro</a>
+            <a href="sala.html">Sala de aula</a>
+            <a href="aula.html">Minha área</a>
             <a href="#contato" class="nav-cta">Fale conosco</a>
         </nav>
     </div>
@@ -1337,6 +1351,14 @@
         <h2 class="section-title">Quem estudou, recomenda</h2>
         <p class="section-subtitle">Histórias reais de quem conquistou a aprovação.</p>
         <div class="testimonials-grid">
+            <div class="testimonial testimonial-destaque">
+                <div class="stars" aria-label="5 de 5 estrelas">★★★★★</div>
+                <blockquote>"Gostaria de deixar meu reconhecimento ao trabalho excepcional realizado pelo professor Lafaiete. Suas aulas foram determinantes para o meu desempenho e evolução contínua nos estudos de Biologia. Destaco, em especial, o aprendizado na área de Genética: por ser um conteúdo denso e exigente, sempre demandou bastante atenção, mas a didática objetiva, a estrutura das explicações e o rigor técnico do professor transformaram totalmente a minha compreensão da matéria. O que antes apresentava grande complexidade tornou-se um domínio seguro para a resolução de questões e provas. Ter a orientação de um docente comprometido com a excelência acadêmica e com a preparação real dos alunos faz toda a diferença. Meu sincero agradecimento pelo profissionalismo e pela dedicação no ensino."</blockquote>
+                <footer>
+                    <div class="t-avatar" aria-hidden="true">GI</div>
+                    <div><strong>Gabriel</strong><span>Aluno real &middot; Imbituba/SC</span></div>
+                </footer>
+            </div>
             <div class="testimonial">
                 <div class="stars" aria-label="5 de 5 estrelas">★★★★★</div>
                 <blockquote>"As aulas do professor Lafa mudaram minha rotina de estudos. Passei de notas baixas para mais de 900 em Biologia no ENEM. O simulados e a correção por OCR fizeram toda a diferença."</blockquote>
@@ -1550,6 +1572,8 @@
                 <a href="#planos">Planos</a>
                 <a href="#faq">FAQ</a>
                 <a href="cadastro.html">Meu monstro</a>
+                <a href="sala.html">Sala de aula</a>
+                <a href="aula.html">Minha área</a>
             </div>
             <div class="footer-col">
                 <h4>Contato</h4>

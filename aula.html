@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Área - Aula Agendada - Simplifica BIO Online</title>
+    <meta name="description" content="Sua aula agendada com quadro branco ao vivo, material exclusivo, plano de estudo, simulados e evolução do monstro via XP.">
+    <meta name="robots" content="noindex, follow">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2316a34a'/><text x='50' y='72' font-size='58' font-family='Arial' font-weight='bold' text-anchor='middle' fill='white'>B</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --green-900: #0a3622;
+            --green-800: #14532d;
+            --green-700: #166534;
+            --green-600: #16a34a;
+            --green-500: #22c55e;
+            --green-100: #dcfce7;
+            --green-50: #f0fdf4;
+            --teal-500: #14b8a6;
+            --sky-500: #0ea5e9;
+            --violet-500: #8b5cf6;
+            --amber-400: #fbbf24;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 18px 40px -18px rgba(22, 163, 74, 0.45);
+            --radius: 12px;
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            color: var(--gray-800);
+            background: var(--gray-50);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+        header {
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 12px 0;
+        }
+        header .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--green-800);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo span { color: var(--green-600); }
+        .logo-icon {
+            width: 38px; height: 38px;
+            background: linear-gradient(135deg, var(--green-600), var(--green-800));
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            transition: transform 0.4s var(--ease);
+        }
+        .logo:hover .logo-icon { transform: rotate(-10deg) scale(1.08); }
+        nav { display: flex; align-items: center; gap: 24px; }
+        nav a { color: var(--gray-600); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
+        nav a:hover { color: var(--green-600); }
+        nav a.active { color: var(--green-700); font-weight: 700; }
+
+        .page-hero {
+            background: linear-gradient(135deg, var(--green-50), var(--white), var(--green-50));
+            background-size: 220% 220%;
+            animation: heroFlow 14s ease-in-out infinite;
+            padding: 48px 0 40px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: -45%;
+            right: -8%;
+            width: 460px;
+            height: 460px;
+            background: radial-gradient(circle, rgba(34,197,94,0.14) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: blobPulse 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .page-hero h1 { font-size: 2.1rem; font-weight: 800; color: var(--gray-900); margin-bottom: 8px; position: relative; }
+        .page-hero h1 span {
+            background: linear-gradient(110deg, var(--green-600), var(--teal-500), var(--green-500), var(--green-600));
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shineText 6s linear infinite;
+        }
+        .page-hero p { color: var(--gray-600); max-width: 600px; margin: 0 auto; position: relative; }
+
+        main { padding: 36px 0 80px; }
+
+        .topo-linha {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+        .saudacao { font-size: 1.15rem; font-weight: 700; color: var(--gray-900); }
+        .saudacao span { color: var(--green-600); }
+        .mini-btn {
+            border: 1px solid var(--gray-100);
+            background: var(--white);
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            font-family: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--gray-600);
+            transition: all 0.2s var(--ease);
+        }
+        .mini-btn svg { width: 16px; height: 16px; }
+        .mini-btn:hover { border-color: var(--green-500); color: var(--green-700); transform: translateY(-2px); box-shadow: var(--shadow); }
+
+        .aula-topo {
+            display: grid;
+            grid-template-columns: 1.25fr 1fr;
+            gap: 22px;
+            margin-bottom: 34px;
+        }
+        .card {
+            background: var(--white);
+            border: 1px solid var(--gray-100);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 28px;
+        }
+        .aula-info { position: relative; overflow: hidden; }
+        .aula-info::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(34,197,94,0.12), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .chip-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fef3c7;
+            color: #b45309;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+        }
+        .chip-status .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: pulseDot 1.2s ease-in-out infinite; }
+        .aula-info h2 { font-size: 1.6rem; font-weight: 800; color: var(--gray-900); margin-bottom: 6px; }
+        .aula-info .tema { color: var(--green-700); font-weight: 700; font-size: 1rem; margin-bottom: 16px; }
+        .meta-lista { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+        .meta-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-100);
+            border-radius: 10px;
+            padding: 8px 13px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-600);
+        }
+        .meta-item svg { width: 16px; height: 16px; color: var(--green-600); }
+        .aula-desc { font-size: 0.92rem; color: var(--gray-600); margin-bottom: 20px; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 13px 26px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.25s var(--ease);
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -80%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(100deg, transparent, rgba(255,255,255,0.45), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.5s var(--ease);
+        }
+        .btn:hover::after { left: 130%; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--green-500), var(--green-700));
+            background-size: 160% 160%;
+            color: var(--white);
+        }
+        .btn-primary:hover { background-position: 100% 50%; transform: translateY(-2px); box-shadow: var(--shadow-glow); }
+        .btn-sec {
+            background: linear-gradient(135deg, #06b6d4, #0f766e);
+            background-size: 160% 160%;
+            color: var(--white);
+        }
+        .btn-sec:hover { background-position: 100% 50%; transform: translateY(-2px); box-shadow: 0 18px 40px -18px rgba(20,184,166,0.55); }
+        .btn-ghost { background: var(--gray-100); color: var(--gray-600); }
+        .btn-ghost:hover { background: #e5e7eb; color: var(--green-700); }
+        .btn-ghost.feito { background: var(--green-100); color: var(--green-700); cursor: default; }
+        .btn-ghost.feito:hover { transform: none; box-shadow: none; }
+        .aula-acoes { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .quadro-card {
+            background: linear-gradient(150deg, var(--gray-900) 0%, #14532d 78%, var(--green-700) 100%);
+            color: #fff;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .quadro-card::before {
+            content: '';
+            position: absolute;
+            top: -70px; left: -70px;
+            width: 230px; height: 230px;
+            background: radial-gradient(circle, rgba(34,197,94,0.35), transparent 70%);
+            border-radius: 50%;
+            animation: blobPulse 7s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .quadro-ico {
+            width: 56px; height: 56px;
+            background: rgba(255,255,255,0.14);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 14px;
+            position: relative;
+        }
+        .quadro-ico svg { width: 28px; height: 28px; }
+        .quadro-card h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 6px; position: relative; }
+        .quadro-card p { font-size: 0.9rem; color: rgba(255,255,255,0.78); margin-bottom: 18px; position: relative; }
+        .quadro-card .btn { position: relative; align-self: flex-start; }
+        .quadro-tag {
+            position: absolute;
+            top: 18px; right: 18px;
+            background: rgba(34,197,94,0.25);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: #bbf7d0;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 5px 12px;
+            border-radius: 999px;
+        }
+
+        .subtitulo { font-size: 1.2rem; font-weight: 800; color: var(--gray-900); margin-bottom: 4px; }
+        .subtexto { color: var(--gray-600); font-size: 0.95rem; margin-bottom: 18px; }
+        .inter-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .inter-card {
+            background: var(--white);
+            border: 1px solid var(--gray-100);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 22px 20px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.3s var(--ease);
+            position: relative;
+            overflow: hidden;
+        }
+        .inter-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-glow); border-color: var(--green-500); }
+        .inter-ico {
+            width: 46px; height: 46px;
+            border-radius: 13px;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff;
+        }
+        .inter-ico svg { width: 23px; height: 23px; }
+        .inter-ico.verde { background: linear-gradient(135deg, var(--green-500), var(--green-700)); }
+        .inter-ico.cielo { background: linear-gradient(135deg, var(--sky-500), #0369a1); }
+        .inter-ico.violeta { background: linear-gradient(135deg, var(--violet-500), #6d28d9); }
+        .inter-ico.ambar { background: linear-gradient(135deg, var(--amber-400), #d97706); }
+        .inter-card strong { font-size: 1rem; color: var(--gray-900); }
+        .inter-card p { font-size: 0.83rem; color: var(--gray-600); line-height: 1.5; }
+        .inter-seta { margin-top: auto; font-size: 0.83rem; font-weight: 800; color: var(--green-600); display: inline-flex; align-items: center; gap: 5px; }
+        .inter-card:hover .inter-seta { gap: 9px; }
+        .inter-seta svg { width: 15px; height: 15px; transition: transform .25s var(--ease); }
+
+        .xp-mini { background: var(--green-50); border: 1px solid var(--green-100); border-radius: 9px; padding: 9px 11px; margin-top: 2px; }
+        .xp-mini-linha { display: flex; justify-content: space-between; font-size: 0.76rem; font-weight: 700; color: var(--green-700); margin-bottom: 5px; }
+        .barra { background: var(--gray-100); border-radius: 999px; height: 9px; overflow: hidden; }
+        .barra .fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--green-500), var(--teal-500)); transition: width 0.9s var(--ease); }
+
+        footer {
+            background: var(--gray-900);
+            color: rgba(255,255,255,0.7);
+            padding: 32px 0;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        footer a { color: #22c55e; text-decoration: none; }
+
+        @keyframes heroFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes blobPulse { 0%, 100% { transform: scale(1); opacity: 0.85; } 50% { transform: scale(1.12); opacity: 1; } }
+        @keyframes shineText { to { background-position: 300% center; } }
+        @keyframes pulseDot { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.55; } }
+
+        @media (max-width: 960px) {
+            .aula-topo { grid-template-columns: 1fr; }
+            .inter-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            nav { gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
+            .page-hero h1 { font-size: 1.65rem; }
+            .card { padding: 22px 18px; }
+        }
+        @media (max-width: 520px) {
+            .inter-grid { grid-template-columns: 1fr; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            * { transition: none !important; animation: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <a href="index.html" class="logo" aria-label="Simplifica BIO - página inicial">
+            <span class="logo-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20c0-5 2-8 8-9-1 6-4 9-8 9z"/><path d="M4 20c3-1 5-3 8-9"/></svg>
+            </span>
+            Simplifica <span>BIO</span>
+        </a>
+        <nav>
+            <a href="index.html">Início</a>
+            <a href="materiais.html">Materiais</a>
+            <a href="cadastro.html">Meu monstro</a>
+            <a href="sala.html">Sala de aula</a>
+            <a href="aula.html" class="active">Minha área</a>
+            <a href="index.html#contato">Fale conosco</a>
+        </nav>
+    </div>
+</header>
+
+<section class="page-hero">
+    <div class="container">
+        <h1>Sua aula <span>agendada</span></h1>
+        <p>Tudo o que acontece durante a aula em um só lugar: quadro branco ao vivo, material, plano de estudo, simulado e XP do seu monstro.</p>
+    </div>
+</section>
+
+<main>
+    <div class="container">
+
+        <div class="topo-linha">
+            <p class="saudacao" id="saudacao">Olá!</p>
+            <button class="mini-btn" id="btn-sair">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+                Sair da conta
+            </button>
+        </div>
+
+        <div class="aula-topo">
+            <div class="card aula-info">
+                <span class="chip-status"><span class="dot"></span>Agendada</span>
+                <h2>Aula de Biologia</h2>
+                <p class="tema">Tema: Genética — cruzamentos e resolução de questões</p>
+                <div class="meta-lista">
+                    <span class="meta-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Prof. Lafaiete
+                    </span>
+                    <span class="meta-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+                        Sexta, 19h
+                    </span>
+                    <span class="meta-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        1 hora
+                    </span>
+                </div>
+                <p class="aula-desc">A aula acontece ao vivo no quadro branco compartilhado — você acompanha e desenha junto com o professor. Material e simulado do tema ficam disponíveis na sua área.</p>
+                <div class="aula-acoes">
+                    <button class="btn btn-primary" id="btn-iniciar">Iniciar aula (+20 XP)</button>
+                    <a class="btn btn-ghost" href="plano.html">Ver plano de estudo</a>
+                </div>
+            </div>
+
+            <div class="card quadro-card">
+                <span class="quadro-tag">Ao vivo</span>
+                <div class="quadro-ico">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M12 17v4"/><path d="M8 21h8"/><path d="M7 8h6"/><path d="M7 12h10"/></svg>
+                </div>
+                <h3>Quadro branco ao vivo</h3>
+                <p>O quadro é compartilhado com o professor em tempo real: desenhe, anote e resolva questões junto, sem instalar nada.</p>
+                <a class="btn btn-sec" href="sala.html">Abrir quadro branco</a>
+            </div>
+        </div>
+
+        <h3 class="subtitulo">Tudo da sua aula em um lugar</h3>
+        <p class="subtexto">Acesse o material exclusivo, siga o plano de estudo, pratique no simulado e evolua seu monstro a cada estudo.</p>
+        <div class="inter-grid">
+            <a class="inter-card" href="materiais.html">
+                <span class="inter-ico verde">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                </span>
+                <strong>Material exclusivo</strong>
+                <p>Slides das aulas e listas de exercícios para baixar e estudar.</p>
+                <span class="inter-seta">Abrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </a>
+            <a class="inter-card" href="plano.html">
+                <span class="inter-ico cielo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                </span>
+                <strong>Plano de estudo</strong>
+                <p>6 semanas organizadas com progresso salvo a cada item concluído.</p>
+                <span class="inter-seta">Abrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </a>
+            <a class="inter-card" href="simulado%20genetica%201.html">
+                <span class="inter-ico violeta">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 15h6"/><path d="M9 11h6"/></svg>
+                </span>
+                <strong>Simulado de Genética</strong>
+                <p>10 questões no estilo ENEM com correção instantânea e XP por acerto.</p>
+                <span class="inter-seta">Resolver <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </a>
+            <a class="inter-card" href="cadastro.html">
+                <span class="inter-ico ambar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </span>
+                <strong>Meu monstro</strong>
+                <p id="xp-texto">Crie seu ovo e evolua estudando — cada aula vale XP.</p>
+                <div class="xp-mini" id="xp-mini" hidden>
+                    <div class="xp-mini-linha"><span id="xp-estagio"></span><span id="xp-valor"></span></div>
+                    <div class="barra"><div class="fill" id="xp-fill" style="width:0%"></div></div>
+                </div>
+                <span class="inter-seta">Evoluir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </a>
+        </div>
+
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2026 Simplifica BIO Online. Todos os direitos reservados. | <a href="index.html">Voltar ao início</a></p>
+    </div>
+</footer>
+
+<script src="avatar.js"></script>
+<script src="aluno.js"></script>
+<script>
+    if (!AlunoStore.exigeLogin()) throw new Error('sem sessao');
+
+    const sessao = AlunoStore.carregar();
+    document.getElementById('saudacao').innerHTML = 'Olá, <span>' + sessao.nome + '</span>! Sua próxima aula está marcada.';
+
+    function renderizarXPMini() {
+        const perfil = AvatarStore.carregar();
+        if (!perfil) return;
+        const sp = getEspecie(perfil.especie);
+        const prog = progressoXP(perfil.xp);
+        document.getElementById('xp-texto').textContent = sp.nome + ' — ' + ESTAGIOS[prog.i].nome + '.';
+        document.getElementById('xp-mini').hidden = false;
+        document.getElementById('xp-estagio').textContent = ESTAGIOS[prog.i].nome;
+        document.getElementById('xp-valor').textContent = perfil.xp + ' XP';
+        requestAnimationFrame(() => {
+            document.getElementById('xp-fill').style.width = Math.round(prog.pct * 100) + '%';
+        });
+    }
+    renderizarXPMini();
+
+    document.getElementById('btn-sair').addEventListener('click', () => {
+        AlunoStore.sair();
+        location.href = 'login.html';
+    });
+
+    document.getElementById('btn-iniciar').addEventListener('click', () => {
+        const btn = document.getElementById('btn-iniciar');
+        const r = AvatarStore.premiarAula();
+        if (!r) {
+            alunoToast('Crie seu monstro em "Meu monstro" para ganhar XP', 'erro');
+            setTimeout(() => location.href = 'cadastro.html', 1200);
+            return;
+        }
+        if (r.ganho === 0) {
+            alunoToast('Aula de hoje já premiada — volte amanhã!', 'erro');
+        } else {
+            alunoToast('+' + r.ganho + ' XP! Aula iniciada.', 'ok');
+            if (r.evoluiu && typeof toastEvolucao === 'function') {
+                toastEvolucao(r.perfil.especie, r.estagioDepois);
+            }
+        }
+        renderizarXPMini();
+        btn.classList.add('feito');
+        btn.textContent = 'Aula de hoje concluída';
+    });
+</script>
+
+</body>
+</html>
